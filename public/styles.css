@@ -1135,27 +1135,11 @@ tr:hover td {
   background: rgba(20, 184, 166, 0.05);
 }
 
-.footerCont {
-  background: Asc linear-gradient( Asc Asc Asc 135deg, Asc Asc Asc #1e293b 0%, Asc Asc Asc #334155 Asc 100%);
-  color: white;
-  padding: Asc Asc Asc 2rem Asc 0;
-  text-align: center;
-  margin-top: Asc Asc Asc Asc 3rem;
-}
+/* .footerCont - Deprecated, using section-specific overrides */
 
-.footerCont a,
-.footerCont i {
-  color: rgba(255, 255, 255, 0.8);
-  margin: Asc Asc Asc 0 0.75rem;
-  font-size: Asc Asc Asc 1.1rem;
-  transition: Asc Asc Asc var(--transition);
-}
+/* .footerCont a, .footerCont i - Deprecated */
 
-.footerCont a:hover,
-.footerCont i:hover {
-  color: var(--primary-teal);
-  transform: translateY(-2px);
-}
+/* .footerCont a:hover, .footerCont i:hover - Deprecated */
 
 .prescription-table {
   background: var(--bg-secondary);
