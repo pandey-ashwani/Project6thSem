@@ -1,6 +1,7 @@
 <% layout("layouts/admin/boilerplate.ejs") %>
 
 <div class="admin-page-container">
+
   <!-- Page Header -->
   <div class="admin-page-header">
     <div class="page-title">
@@ -10,56 +11,90 @@
       <h2>Patient History</h2>
     </div>
     <div class="stat-pill">
-      <span class="stat-count"><%= allPatient.length %></span>
+<span class="stat-count"><%= allPatient.length %></span>
       <span class="stat-label">Total Patients</span>
     </div>
-  </div>
-
-  <!-- Patient Grid -->
-  <div class="row g-4">
-    <% for(let patient of allPatient) { %>
-    <div class="col-md-6 col-lg-4 col-xl-3">
-      <div class="modern-card h-100">
-        <div class="modern-card-header">
-          <div class="modern-avatar patient-avatar">
-            <i class="fa-solid fa-user-injured"></i>
-          </div>
-          <div class="modern-meta">
-            <h5><%= patient.name %></h5>
-            <span class="modern-tag">Age: <%= patient.age %></span>
-          </div>
-        </div>
-        <div class="modern-card-body">
-          <div class="modern-detail">
-            <i class="fa-solid fa-virus"></i>
-            <span><%= patient.disease || 'N/A' %></span>
-          </div>
-          <div class="modern-detail">
-            <i class="fa-solid fa-hospital"></i>
-            <span><%= patient.hospital || 'N/A' %></span>
-          </div>
-          <div class="modern-detail">
-            <i class="fa-solid fa-location-dot"></i>
-            <span><%= patient.district || 'N/A' %></span>
-          </div>
-        </div>
-        <div class="modern-card-footer">
-          <a href="/patient-profile/<%= patient._id %>/view" class="btn-view">
-            <i class="fa-solid fa-eye me-1"></i>View Profile
-          </a>
-        </div>
+    <div class="page-controls">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="patientSearch" placeholder="Search patients by name, disease..." class="form-control">
       </div>
+      <select id="diseaseFilter" class="form-select">
+        <option value="">All Diseases</option>
+      </select>
+      <select id="hospitalFilter" class="form-select">
+        <option value="">All Hospitals</option>
+      </select>
+      <button id="toggleView" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-table-cells"></i> Table View
+      </button>
     </div>
-    <% } %>
   </div>
 
-  <% if(allPatient.length === 0) { %>
-  <div class="empty-state">
-    <div class="empty-icon">
-      <i class="fa-solid fa-clipboard-list"></i>
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="text-center py-5 d-none">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-    <p>No patients found</p>
   </div>
-  <% } %>
+
+
+
+  <!-- Patient Data -->
+  <script>
+    window.patientData = <%- JSON.stringify(allPatient || []) %>;
+    window.totalPatients = <%= (allPatient || []).length %>;
+  </script>
+
+  <!-- Cards View (Default) -->
+  <div id="cardsView" class="patient-views active">
+    <div class="row g-4" id="patientCards">
+      <!-- Cards populated by JS -->
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div id="tableView" class="patient-views">
+    <div class="table-responsive">
+      <table class="table patient-table modern-table">
+        <thead>
+          <tr>
+            <th data-sort="name"><i class="fa-solid fa-sort"></i> Name</th>
+            <th data-sort="age"><i class="fa-solid fa-sort"></i> Age</th>
+            <th data-sort="disease"><i class="fa-solid fa-sort"></i> Disease</th>
+            <th data-sort="hospital"><i class="fa-solid fa-sort"></i> Hospital</th>
+            <th data-sort="district"><i class="fa-solid fa-sort"></i> District</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="patientTableBody">
+          <!-- Rows populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Patient pagination" id="paginationContainer" class="d-flex justify-content-center mt-5"></nav>
+
+
+
+  <!-- Enhanced Empty State -->
+  <div id="emptyState" class="empty-state-enhanced d-none">
+    <div class="empty-icon-large">
+      <i class="fa-solid fa-users-slash"></i>
+    </div>
+    <h3>No Patients Match Your Search</h3>
+    <p class="empty-subtitle">Try adjusting your filters or add new patients from the dashboard.</p>
+    <div class="empty-actions">
+      <a href="/patients-check" class="btn btn-primary">
+        <i class="fa-solid fa-plus me-1"></i>Add New Patient
+      </a>
+      <button id="clearFilters" class="btn btn-outline-secondary">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
 </div>
 

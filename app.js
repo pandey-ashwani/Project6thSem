@@ -24,7 +24,7 @@ const {isAdminLoggedIn , isDoctorLoggedIn , isSuperAdminLoggedIn ,isPatientLogge
 const patient = require("./model/patient.js");
 
 
-const dbUrl = "mongodb://127.0.0.1:27017/sih-project";
+const dbUrl = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sih-project";
 
 
 app.use(express.json());
@@ -38,7 +38,7 @@ app.set("views",path.join(__dirname,"/views"));
 
 
 const store = MongoStore.create({
-    mongoUrl: "mongodb://127.0.0.1:27017/sih-project",
+    mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sih-project",
     crypto: {
         secret: "mysupersecret"
     },
