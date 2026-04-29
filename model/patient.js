@@ -56,7 +56,19 @@ const patientSchema = new mongoose.Schema({
     admin:{
         type: mongoose.Schema.Types.ObjectId,
         ref : "Admin",
-    }
+    },
+
+    prescriptions: [{
+        medicines: [{
+            name: { type: String, required: true },
+            dosage: { type: String, required: true },
+            duration: { type: String, required: true },
+            instructions: { type: String }
+        }],
+        date: { type: Date, default: Date.now },
+        doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' }
+    }]
+
 });
 
 patientSchema.plugin(passportLocalMongoose);

@@ -1,0 +1,359 @@
+/* Compact Modern Prescription Page - Responsive & Professional */
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+  --success-gradient: linear-gradient(135deg, #10b981, #059669);
+  --danger-color: #ef4444;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --card-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+/* Hospital Header - Compact */
+.hospital-header {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--card-shadow-lg);
+}
+
+.hospital-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.hospital-address {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+/* Page Header */
+.page-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-gradient);
+  color: white;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow);
+}
+
+.page-title h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Patient Info - Compact Card */
+.patient-info-modern {
+  background: white;
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: var(--card-shadow-lg);
+  margin-bottom: 1.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.patient-header-modern {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.patient-avatar-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.patient-meta-modern h5 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.patient-disease-tag {
+  background: var(--success-gradient);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.patient-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.patient-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 3px solid #2563eb;
+  transition: all 0.3s ease;
+}
+
+.patient-detail-item:hover {
+  background: white;
+  box-shadow: var(--card-shadow);
+}
+
+.patient-detail-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.patient-detail-text strong {
+  font-weight: 600;
+  color: #374151;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.patient-detail-text span {
+  color: #1e2937;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Prescription Table - Compact */
+.prescription-table-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow-lg);
+  margin-bottom: 1.5rem;
+}
+
+.modern-card-header {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.table-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.modern-meta h5 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modern-tag {
+  background: rgba(255,255,255,0.2);
+  padding: 0.4rem 1rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.table-card-body {
+  padding: 1.75rem;
+}
+
+#medicineSearch {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  max-width: 300px;
+}
+
+.prescription-table {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.prescription-thead th {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 1rem 1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.prescription-table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.prescription-table input {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.prescription-table input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn-remove {
+  background: var(--danger-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 80px;
+}
+
+.btn-add-medicine {
+  background: var(--success-gradient);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+}
+
+.btn-add-medicine:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--card-shadow-lg);
+}
+
+/* Footer */
+.prescription-footer {
+  background: white;
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: var(--card-shadow-lg);
+}
+
+.modern-detail {
+  text-align: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border-left: 3px solid #2563eb;
+}
+
+.modern-detail i {
+  font-size: 1.25rem;
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.save-btn, .btn-success, .btn-outline-primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.save-btn {
+  background: var(--primary-gradient);
+  border: none;
+  color: white;
+  font-size: 1rem;
+  box-shadow: var(--card-shadow-lg);
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-xl);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .doctor-page-container {
+    padding: 1rem;
+  }
+  
+  .patient-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .prescription-table td {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .prescription-thead th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hospital-header {
+    padding: 1.25rem 1rem;
+  }
+  
+  .patient-header-modern {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Print */
+@media print {
+  .no-print { display: none !important; }
+  * { box-shadow: none !important; }
+}
+

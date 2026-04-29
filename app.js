@@ -143,7 +143,7 @@ app.get("/doctor-home",isDoctorLoggedIn,(req,res)=>{
 })
 
 app.get("/doctor-patient-history",isDoctorLoggedIn,verifyDoctorPatients,async (req,res)=>{
-    res.render("doctor/patient-history.ejs");
+    res.render("doctor/patient-history.ejs",{allPatients: req.allPatients});
 }) 
 
 app.get("/doctor-patient-appointment",isDoctorLoggedIn,verifyDoctorPatients,async (req,res)=>{
@@ -186,12 +186,69 @@ app.get("/prescription/:id",isDoctorLoggedIn,async (req,res)=>{
     let {id} = req.params;
     let doctor = req.user;
     let patient = await Patient.findById(id);
+    if (!patient || patient.doctor.toString() !== doctor._id.toString()) {
+        req.flash("error", "Patient not accessible");
+        return res.redirect("/doctor-patient-history");
+    }
     res.render("doctor/prescription.ejs",{doctor,patient});
 })
 
-app.post("/add-prescription",(req,res)=>{
-    console.log(req.body);
-})
+app.post("/add-prescription", isDoctorLoggedIn, async (req, res) => {
+    try {
+        const patientId = req.body.patientId || req.params.id; // Fallback if needed
+        if (!patientId) {
+            req.flash("error", "Patient ID required");
+            return res.redirect("/doctor-patient-history");
+        }
+
+        const patient = await Patient.findById(patientId);
+        if (!patient) {
+            req.flash("error", "Patient not found");
+            return res.redirect("/doctor-patient-history");
+        }
+
+        // Verify doctor-patient relationship
+        if (patient.doctor.toString() !== req.user._id.toString()) {
+            req.flash("error", "Unauthorized access to patient");
+            return res.redirect("/doctor-patient-history");
+        }
+
+        const medicines = [];
+        const medicineNames = req.body.medicine || [];
+        const dosages = req.body.dosage || [];
+        const durations = req.body.duration || [];
+        const instructionsList = req.body.instructions || [];
+
+        for (let i = 0; i < medicineNames.length; i++) {
+            if (medicineNames[i] && dosages[i] && durations[i]) {
+                medicines.push({
+                    name: medicineNames[i].trim(),
+                    dosage: dosages[i].trim(),
+                    duration: durations[i].trim(),
+                    instructions: instructionsList[i] ? instructionsList[i].trim() : ""
+                });
+            }
+        }
+
+        if (medicines.length === 0) {
+            req.flash("error", "At least one medicine required");
+            return res.redirect(`/prescription/${patientId}`);
+        }
+
+        patient.prescriptions.push({
+            medicines: medicines,
+            doctor: req.user._id
+        });
+
+        await patient.save();
+        req.flash("success", `Prescription saved successfully for ${patient.name}`);
+        res.redirect(`/doctor-patient-history`);
+    } catch (err) {
+        console.error(err);
+        req.flash("error", "Error saving prescription. Please try again.");
+        res.redirect("/doctor-patient-history");
+    }
+});
 
 
 // for Admin
