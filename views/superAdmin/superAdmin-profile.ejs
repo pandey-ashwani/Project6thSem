@@ -1,14 +1,142 @@
 <% layout("layouts/superAdmin/boilerplate.ejs") %>
-<div class="row">
-    <h4 class="col-6 offset-5 mt-5 mb-4">My Profile</h4>
-<div class="card col-6 offset-4" style="width: 23rem;">
-    <div class="card-body">
-      <h5 class="card-title">Name : <%= superAdmin.name %></h5>
-      <h6 class="card-text">Email : <%= superAdmin.email %></h6>
-      <h6 class="card-text">Phone Number : <%= superAdmin.phone %></h6>
-      <h6 class="card-title">Username : <%= superAdmin.username %></h6>
-      <a href="#" class="card-link" style="text-decoration:none;">Update</a>
-      <a href="/logout" class="card-link" style="text-decoration:none;">Log Out</a>
+
+<link rel="stylesheet" href="/styles-superAdmin-profile.css">
+
+
+<main class="profile-container">
+    <div class="profile-hero">
+        <div class="profile-backdrop"></div>
+
+        <div class="profile-avatar-section">
+            <div class="profile-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+
+            <div class="profile-header-text">
+                <h1 class="profile-name"><%= superAdmin.name %></h1>
+                <p class="profile-role">Super Administrator</p>
+
+                <div class="profile-stats">
+                    <span><i class="fas fa-chart-line"></i> State Admin Dashboard</span>
+                    <span><i class="fas fa-users"></i> Health Management System</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <div class="profile-content">
+
+        <!-- INFO CARDS -->
+        <section class="profile-info-grid">
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-user"></i></div>
+                <div class="info-content">
+                    <label>Full Name</label>
+                    <p><%= superAdmin.name %></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-at"></i></div>
+                <div class="info-content">
+                    <label>Email Address</label>
+                    <p><%= superAdmin.email %></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-phone"></i></div>
+                <div class="info-content">
+                    <label>Phone</label>
+                    <p><%= superAdmin.phone || "Not set" %></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-id-badge"></i></div>
+                <div class="info-content">
+                    <label>Username</label>
+                    <p><%= superAdmin.username %></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-calendar"></i></div>
+                <div class="info-content">
+                    <label>Member Since</label>
+                    <p>
+                        <%= superAdmin.createdAt 
+                            ? new Date(superAdmin.createdAt).toLocaleDateString() 
+                            : "N/A" %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon"><i class="fas fa-key"></i></div>
+                <div class="info-content">
+                    <label>Account Status</label>
+                    <p class="status-active">Active</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ACTION BUTTONS -->
+        <section class="profile-actions-section">
+            <div class="actions-grid">
+
+                <button class="profile-action-btn primary"
+                    onclick="window.location.href='/profile/edit'">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </button>
+
+                <button class="profile-action-btn secondary"
+                    onclick="window.location.href='/change-password'">
+                    <i class="fas fa-key"></i>
+                    Change Password
+                </button>
+
+                <button class="profile-action-btn warning"
+                    onclick="window.location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Log Out
+                </button>
+
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script>
+function copyToClipboard(text, selector) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector(selector);
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+    btn.style.background = 'var(--gradient-primary)';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.style.background = '';
+    }, 2000);
+  }).catch(() => alert('Copy failed'));
+}
+
+// Intersection Observer for staggered animations
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  });
+  document.querySelectorAll('.info-card').forEach(card => {
+    observer.observe(card);
+  });
+}
+</script>
+

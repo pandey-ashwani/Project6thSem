@@ -3,56 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SuperAdmin Signup | SwasthyaSankalp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles-superAdmin-login.css">
 </head>
-<body style="padding-top: 0;">
+<body class="superadmin-signup-page">
+    
+    <a href="/superAdmin-login" class="superadmin-back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Back to Login
+    </a>
 
-    <button class="btn btn-success mt-3 ms-3" onclick="window.location.href='/'" >
-        <i class="fa-solid fa-arrow-left-long mt-1 ms-1"></i> Back</button>
+    <div class="superadmin-signup-container">
+        <div class="superadmin-signup-card">
+            <div class="superadmin-signup-progress">
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+            </div>
 
-    <div class="container row" >
-        <form method="post" action="/superAdmin-signup" class="col-6 offset-4" style="margin-top: 70px;">
+            <div class="superadmin-branding">
+                <div class="superadmin-logo">
+                    <img src="/logo.png" alt="SwasthyaSankalp Logo">
+                </div>
+                <h1 class="superadmin-signup-title">Create SuperAdmin Account</h1>
+                <p class="superadmin-signup-subtitle">Join State Health Management System</p>
+            </div>
 
-            <img src="logo.png" alt="Logo" width="100" class="logo-image " style="margin-left: 43%;">
-            <h3 class="col-6 offset-4" style="margin-bottom: 60px;">Sign Up as Admin</h3>
+            <% if (typeof messages !== 'undefined' && messages.error) { %>
+                <div class="superadmin-error">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <%= messages.error %>
+                </div>
+            <% } %>
 
-            <label for="name" class="form-label">Full Name:</label>
-            <input type="text" name="name" id="name" class="form-control">
+            <form method="POST" action="/superAdmin-signup" id="superadmin-signup-form" novalidate>
+                <div class="superadmin-input-group">
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="superadmin-input form-control" 
+                        placeholder=" " 
+                        required 
+                        autocomplete="name"
+                        minlength="2"
+                    >
+                    <label for="name" class="superadmin-input-label">
+                        <i class="fas fa-user me-1"></i>Full Name
+                    </label>
+                </div>
 
-            <label for="email" class="form-label mt-3">Email:</label>
-            <input type="text" name="email" id="email" class="form-control">
+                <div class="superadmin-field-group">
+                    <div class="superadmin-input-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="superadmin-input form-control" 
+                            placeholder=" " 
+                            required 
+                            autocomplete="email"
+                        >
+                        <label for="email" class="superadmin-input-label">
+                            <i class="fas fa-envelope me-1"></i>Email
+                        </label>
+                    </div>
 
-            <label for="phone" class="form-label mt-3">Mobile Number:</label>
-            <input type="text" name="phone" id="phone" class="form-control">
+                    <div class="superadmin-input-group">
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            class="superadmin-input form-control" 
+                            placeholder=" " 
+                            required 
+                            autocomplete="tel"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                        >
+                        <label for="phone" class="superadmin-input-label">
+                            <i class="fas fa-phone me-1"></i>Phone
+                        </label>
+                    </div>
+                </div>
 
-            <label for="username" class="form-label mt-3">Username:</label>
-            <input type="text" name="username" id="username" class="form-control">
+                <div class="superadmin-input-group">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="superadmin-input form-control" 
+                        placeholder=" " 
+                        required 
+                        autocomplete="username"
+                        minlength="3"
+                    >
+                    <label for="username" class="superadmin-input-label">
+                        <i class="fas fa-id-badge me-1"></i>Username
+                    </label>
+                </div>
 
-            <label for="password" class="form-label mt-3">Password:</label>
-            <input type="text" name="password" id="password" class="form-control">
+                <div class="superadmin-input-group">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="superadmin-input form-control" 
+                        placeholder=" " 
+                        required 
+                        autocomplete="new-password"
+                        minlength="8"
+                    >
+                    <label for="password" class="superadmin-input-label">
+                        <i class="fas fa-lock me-1"></i>Password
+                    </label>
+                    <button type="button" class="superadmin-password-toggle" tabindex="-1">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                    <div class="superadmin-strength-meter">
+                        <div class="superadmin-strength-fill"></div>
+                    </div>
+                    <div class="superadmin-strength-text">Enter password</div>
+                </div>
 
-            <button class="btn btn-outline-dark mt-4 mb-4">Sign Up</button>
-            
+                <div class="superadmin-input-group">
+                    <input 
+                        type="password" 
+                        id="confirm-password" 
+                        name="confirm-password" 
+                        class="superadmin-input form-control" 
+                        placeholder=" " 
+                        required 
+                        autocomplete="new-password"
+                    >
+                    <label for="confirm-password" class="superadmin-input-label">
+                        <i class="fas fa-lock me-1"></i>Confirm Password
+                    </label>
+                    <button type="button" class="confirm-password-toggle superadmin-password-toggle" tabindex="-1">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                    <i class="fas fa-circle superadmin-match-icon match-checking"></i>
+                </div>
 
-        </form>
+                <div class="superadmin-signup-buttons">
+                    <button type="submit" class="superadmin-btn superadmin-btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                    <a href="/superAdmin-login" class="superadmin-btn superadmin-btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Have Account? Login
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="superadmin-footer">
+            <p>&copy; 2024 SwasthyaSankalp. Secure Health Management | Government Authorized</p>
+        </div>
     </div>
 
-
-    <div class="footerCont">
-        <div>
-        <a>&copy 2024 SwasthyaSankalp, Inc.</a>
-        <a>Privacy</a>
-        <a>Terms</a>
-        </div>
-        <div>
-        <i class="fa-brands fa-square-facebook"></i>
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-linkedin"></i>
-        </div>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/superAdmin-login.js"></script>
 </body>
 </html>
