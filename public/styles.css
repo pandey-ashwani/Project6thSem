@@ -270,7 +270,7 @@ main {
 }
 
 /* Admin Dropdown */
-.adminNavContainer .dropdown-menu {
+.adminNavContainer .dropdown-menu, .adminNavContainer .dropdown-menu.show {
   border: none;
   border-radius: 16px;
   box-shadow: var(--shadow-xl);
@@ -278,6 +278,8 @@ main {
   background: var(--bg-secondary);
   backdrop-filter: blur(20px);
   min-width: 220px;
+  z-index: 99999 !important;
+  position: absolute !important;
 }
 
 .adminNavContainer .dropdown-item {
@@ -403,7 +405,7 @@ main {
 
 /* ========== ADMIN NAVBAR MOBILE RESPONSIVE ========== */
 @media (max-width: 991.98px) {
-  .adminNavContainer .navbar-collapse {
+.adminNavContainer .navbar-collapse {
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     border-radius: 16px;
@@ -412,6 +414,10 @@ main {
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--glass-border);
     width: 100%;
+  }
+
+  .adminNavContainer .dropdown-menu {
+    z-index: 100000 !important;
   }
 
   .adminNavContainer .navbar-nav {

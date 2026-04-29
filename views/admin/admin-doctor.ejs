@@ -1,45 +1,86 @@
 <% layout("layouts/admin/boilerplate.ejs") %>
 
-<div class="row" style="margin-top: 8%;">
+<div class="doctor-form-container">
 
-    <h2 class="col-6 " style="margin-left: 37%;">Enter Doctor Details</h2>
-    <form method="post" action="/add-doctor" class="col-6 offset-3">
+    <div class="doctor-form-header">
+        <h1 class="doctor-form-title">
+            <i class="fa-solid fa-user-doctor me-3"></i>
+            Add New Doctor
+        </h1>
+        <p class="doctor-form-subtitle">Fill in the details to register a new doctor in your hospital</p>
+    </div>
 
-        <label for="username" class="form-label mt-4">Username:</label>
-        <input type="text" name="username" id="username" class="form-control">
+    <div class="form-card">
+        <form method="post" action="/add-doctor" id="addDoctorForm" novalidate>
 
-        <label for="name" class="form-label mt-4">Name:</label>
-        <input type="text" name="name" id="name" class="form-control">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" name="phone" id="phone" class="form-control" required>
+                </div>
+            </div>
 
-        <label for="email" class="form-label mt-4">Email:</label>
-        <input type="text" name="email" id="email" class="form-control">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="specialization" class="form-label">Specialization</label>
+                    <input type="text" name="specialization" id="specialization" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="experience" class="form-label">Experience (years)</label>
+                    <input type="number" name="experience" id="experience" class="form-control" min="0" max="50" required>
+                </div>
+            </div>
 
-        <label for="phone" class="form-label mt-3">Contact Number:</label>
-        <input type="text" name="phone" id="phone" class="form-control">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="qualification" class="form-label">Qualifications</label>
+                    <input type="text" name="qualification" id="qualification" class="form-control" required>
+                </div>
+            </div>
 
-        <label for="specialization" class="form-label mt-3">Specialization:</label>
-        <input type="text" name="specialization" id="specialization" class="form-control">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="hospital" class="form-label">Hospital</label>
+                    <input type="text" name="hospital" id="hospital" class="form-control readonly" value="<%= admin.hospital %>" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="district" class="form-label">District</label>
+                    <input type="text" name="district" id="district" class="form-control readonly" value="<%= admin.district %>" readonly>
+                </div>
+            </div>
 
-        <label for="experience" class="form-label mt-3">Year of Experience:</label>
-        <input type="text" name="experience" id="experience" class="form-control">
+            <div class="form-group full-width">
+                <label for="state" class="form-label">State</label>
+                <input type="text" name="state" id="state" class="form-control readonly" value="<%= admin.state %>" readonly>
+            </div>
 
-        <label for="qualification" class="form-label mt-4">Qualifications:</label>
-        <input type="text" name="qualification" id="qualification" class="form-control"> 
-        
-        <label for="hospital" class="form-label mt-4">Hospital: </label>
-        <input type="text" name="hospital" id="hospital" class="form-control" value="<%= admin.hospital %>" readonly>
+            <div class="form-group full-width">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required minlength="8">
+            </div>
 
-        <label for="district" class="form-label mt-4">District: </label>
-        <input type="text" name="district" id="district" class="form-control" value="<%= admin.district %>" readonly>
+            <button type="submit" class="btn-submit">
+                <i class="fa-solid fa-user-plus me-2"></i>
+                Add Doctor
+            </button>
 
-        <label for="state" class="form-label mt-4">state: </label>
-        <input type="text" name="state" id="state" class="form-control" value="<%= admin.state %>" readonly>
-
-        <label for="password" class="form-label mt-3">Password:</label>
-        <input type="text" name="password" id="password" class="form-control">
-
-        <button class="btn btn-success mt-4 mb-4">Add</button>
-
-    </form>
-
+        </form>
+    </div>
 </div>

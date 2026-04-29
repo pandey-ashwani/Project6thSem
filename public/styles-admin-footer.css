@@ -1,0 +1,219 @@
+/* Admin Footer - Modern Glassmorphism Responsive */
+
+/* Admin Footer Base */
+.admin-footer {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  margin-top: auto;
+  transition: var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.admin-footer:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.admin-footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.admin-footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-footer-logo i {
+  background: linear-gradient(135deg, var(--accent-purple) 0%, #a78bfa 100%);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+.admin-footer-logo:hover i {
+  transform: rotate(10deg) scale(1.05);
+}
+
+.admin-footer-logo span {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-footer-tagline {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.admin-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-footer-links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  padding: 0.25rem 0;
+  border-radius: 6px;
+}
+
+.admin-footer-links a:hover {
+  color: var(--accent-purple);
+  background: rgba(139, 92, 246, 0.1);
+  padding-left: 0.5rem;
+  transform: translateX(4px);
+}
+
+.footer-divider {
+  color: var(--border-color);
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+
+.admin-footer-socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.admin-footer-socials a {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+}
+
+.admin-footer-socials a:hover {
+  background: linear-gradient(135deg, var(--accent-purple) 0%, #a78bfa 100%);
+  color: white;
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding: 1rem 1rem 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.admin-footer-bottom p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* Responsive Grid */
+@media (max-width: 992px) {
+  .admin-footer-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .admin-footer-links {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .admin-footer-socials {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-footer-container {
+    padding: 2rem 1rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .admin-footer-logo span {
+    font-size: 1.3rem;
+  }
+
+  .admin-footer-links a {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+  }
+
+  .admin-footer-socials a {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-footer {
+    padding: 1rem 0;
+  }
+
+  .admin-footer-container {
+    padding: 1.5rem 0.75rem 0.75rem;
+    gap: 1rem;
+  }
+
+  .admin-footer-logo {
+    gap: 0.5rem;
+  }
+
+  .admin-footer-logo i {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .admin-footer-logo span {
+    font-size: 1.2rem;
+  }
+
+  .admin-footer-tagline {
+    font-size: 0.9rem;
+  }
+
+  .admin-footer-links {
+    flex-direction: column;
+  }
+}
+
