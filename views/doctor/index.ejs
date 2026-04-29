@@ -1,16 +1,92 @@
 <% layout("/layouts/doctor/boilerplate.ejs") %>
 
-<div class="homeImg">
-    <div class="quotes1">
-        <p>Expert Medical Guidance at Your Fingertips</p>
-        <h3>Quality Medical Care, Made Effortless and Accessible</h3>
+<!-- Doctor Hero Welcome -->
+<section class="doctor-hero">
+  <h1>Welcome Back, Doctor</h1>
+  <p class="subtitle">Your personalized dashboard for efficient patient management and seamless appointments</p>
+  
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">12</span>
+      <span class="stat-label">Today's Appointments</span>
     </div>
-    <div class="doctorImgCont">
-        <img class="doctorImg" src="https://th.bing.com/th/id/R.e9dc7a5ee9caf116055fea358aed01dc?rik=HufwxSmE7CDMKA&riu=http%3a%2f%2fwww.pngall.com%2fwp-content%2fuploads%2f2018%2f05%2fDoctor-PNG-File-Download-Free.png&ehk=%2bKeteaj8sg7lx8ZqKVFzFu%2fbiF41aD4U%2bPEBJTAOefg%3d&risl=&pid=ImgRaw&r=0" alt="doctor illustration">
+    <div class="stat-item">
+      <span class="stat-number">5</span>
+      <span class="stat-label">Upcoming</span>
     </div>
+    <div class="stat-item">
+      <span class="stat-number">24</span>
+      <span class="stat-label">Active Patients</span>
+    </div>
+  </div>
+</section>
 
-<div class="quotes2 mb-4">
-    <span>Innovative </span> <p> Tools for</p><span> Modern Medicine</span>
-    <article>From Routine Appointments to Critical Consultations</article>
-    <img src="https://assets.icliniq.com/v2/assets/images/hompage-image/Chat.svg" alt="chat icon">
-</div>
+<!-- Dashboard Cards -->
+<section class="doctor-dashboard">
+  <!-- Today's Appointments -->
+  <div class="dashboard-card today-appts">
+    <div class="card-icon">
+      <i class="fas fa-calendar-check"></i>
+    </div>
+    <h3 class="card-title">Today's Appointments</h3>
+    <p class="card-description">Manage your scheduled consultations for today. 12 patients awaiting your expertise.</p>
+    <a href="/doctor-patient-appointment" class="btn-dashboard">
+      <i class="fas fa-arrow-right"></i>
+      View Appointments
+    </a>
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div class="dashboard-card upcoming-appts">
+    <div class="card-icon">
+      <i class="fas fa-calendar-days"></i>
+    </div>
+    <h3 class="card-title">Upcoming Appointments</h3>
+    <p class="card-description">Stay ahead with appointments scheduled for the coming week. Plan your schedule effectively.</p>
+    <a href="/doctor-upcoming-appointment" class="btn-dashboard">
+      <i class="fas fa-arrow-right"></i>
+      View Schedule
+    </a>
+  </div>
+
+  <!-- Patient History -->
+  <div class="dashboard-card patient-history">
+    <div class="card-icon">
+      <i class="fas fa-clock-rotate-left"></i>
+    </div>
+    <h3 class="card-title">Patient History</h3>
+    <p class="card-description">Access complete medical history and treatment records for all your patients instantly.</p>
+    <a href="/doctor-patient-history" class="btn-dashboard">
+      <i class="fas fa-arrow-right"></i>
+      View History
+    </a>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="dashboard-card quick-actions">
+    <div class="card-icon">
+      <i class="fas fa-layer-group"></i>
+    </div>
+    <h3 class="card-title">Quick Actions</h3>
+    <p class="card-description">Fast access to essential tools</p>
+    
+    <div class="quick-actions-grid">
+      <a href="/doctor-prescription" class="quick-action-btn">
+        <i class="fas fa-prescription-bottle"></i>
+        <span>New Prescription</span>
+      </a>
+      <a href="#" class="quick-action-btn">
+        <i class="fas fa-file-medical"></i>
+        <span>Patient Notes</span>
+      </a>
+      <a href="#" class="quick-action-btn">
+        <i class="fas fa-stethoscope"></i>
+        <span>Lab Results</span>
+      </a>
+      <a href="#" class="quick-action-btn">
+        <i class="fas fa-chart-line"></i>
+        <span>Reports</span>
+      </a>
+    </div>
+  </div>
+</section>
