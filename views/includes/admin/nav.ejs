@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg adminNavContainer">
+  <div class="container-fluid">
+    <a class="navbar-brand admin-brand" href="/home">
+      <i class="fa-solid fa-shield-heart me-2"></i>
+      <span>Admin Portal</span>
+    </a>
+    <button class="navbar-toggler admin-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarContent" aria-controls="adminNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminNavbarContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/home"><i class="fa-solid fa-house me-2"></i>Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/patient-history"><i class="fa-solid fa-clock-rotate-left me-2"></i>Patient History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/patients-check"><i class="fa-solid fa-user-plus me-2"></i>Add New Patient</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user-doctor me-2"></i>Manage Doctor
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/add-doctor"><i class="fa-solid fa-plus me-2"></i>Add Doctor</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/all-doctor"><i class="fa-solid fa-list me-2"></i>Doctor List</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 gap-lg-3 mt-3 mt-lg-0">
+        <div class="admin-searchBar searchBar">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" placeholder="Search patients, doctors...">
+        </div>
+        <div class="admin-profile profile">
+          <i onclick="window.location.href='/admin-Profile'" class="fa-solid fa-user-shield admin-profile-icon"></i>
+        </div>
+        <div class="admin-actions">
+          <a href="/logout" class="btn-logout-nav"><i class="fa-solid fa-right-from-bracket me-1"></i>Log Out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+

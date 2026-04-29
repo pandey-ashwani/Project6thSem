@@ -1,0 +1,168 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="admin-page-container" style="max-width: 900px; margin-top: 2rem;">
+  <!-- Header -->
+  <div class="profile-header-card" style="padding: 2rem; margin-bottom: 1.5rem;">
+    <div class="profile-avatar-section" style="gap: 1rem;">
+      <div class="profile-avatar admin-avatar" style="width: 64px; height: 64px; font-size: 1.5rem;">
+        <i class="fa-solid fa-user-plus"></i>
+      </div>
+      <div class="profile-title">
+        <h2 style="font-size: 1.5rem;">Register New Patient</h2>
+        <span class="profile-badge admin-badge"><%= admin.hospital %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Form Card -->
+  <div style="background: var(--bg-secondary); border-radius: 24px; padding: 2.5rem; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);"></div>
+
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">
+      <i class="fa-solid fa-circle-info me-2" style="color: var(--primary-blue);"></i>
+      Fill in the patient details below. Fields marked with <span style="color: #ef4444;">*</span> are required.
+    </p>
+
+    <form method="post" action="/new-patient">
+      <div class="row g-4">
+        <!-- Name -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-user me-2" style="color: #8b5cf6;"></i>Full Name <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="name" class="form-control" placeholder="Enter patient name" required
+            value="<%= typeof name !== 'undefined' ? name : '' %>"
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+
+        <!-- Aadhaar -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-id-card me-2" style="color: #8b5cf6;"></i>Aadhaar Number <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="aadhar" class="form-control" placeholder="Enter 12-digit Aadhaar" maxlength="12" required
+            value="<%= typeof aadhar !== 'undefined' ? aadhar : '' %>"
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+
+        <!-- Age -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-cake-candles me-2" style="color: #8b5cf6;"></i>Age <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="age" class="form-control" placeholder="Enter age" required
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+
+        <!-- Contact -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-phone me-2" style="color: #8b5cf6;"></i>Contact Number <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="username" class="form-control" placeholder="Enter contact number" required
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+
+        <!-- Disease -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-virus me-2" style="color: #8b5cf6;"></i>Disease / Symptoms <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="disease" class="form-control" placeholder="Enter disease or symptoms" required
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+
+        <!-- Doctor -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-user-doctor me-2" style="color: #8b5cf6;"></i>Assign Doctor <span style="color: #ef4444;">*</span>
+          </label>
+          <select name="doctorId" class="form-control" required
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary); appearance: auto;">
+            <option value="" disabled selected>Select a doctor</option>
+            <% doctors.forEach(d => { %>
+              <option value="<%= d._id %>"><%= d.name %> — <%= d.specialization %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- District (readonly) -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-location-dot me-2" style="color: #8b5cf6;"></i>District
+          </label>
+          <input type="text" name="district" class="form-control" value="<%= admin.district %>" readonly
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; background: #f1f5f9; color: var(--text-secondary); cursor: not-allowed;">
+        </div>
+
+        <!-- State (readonly) -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-map me-2" style="color: #8b5cf6;"></i>State
+          </label>
+          <input type="text" name="state" class="form-control" value="<%= admin.state %>" readonly
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; background: #f1f5f9; color: var(--text-secondary); cursor: not-allowed;">
+        </div>
+
+        <!-- Hospital (readonly) -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-hospital me-2" style="color: #8b5cf6;"></i>Hospital
+          </label>
+          <input type="text" name="hospital" class="form-control" value="<%= admin.hospital %>" readonly
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; background: #f1f5f9; color: var(--text-secondary); cursor: not-allowed;">
+        </div>
+
+        <!-- Password -->
+        <div class="col-md-6">
+          <label class="form-label" style="font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa-solid fa-lock me-2" style="color: #8b5cf6;"></i>Password <span style="color: #ef4444;">*</span>
+          </label>
+          <input type="text" name="password" class="form-control" placeholder="Set patient password" required
+            style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="d-flex flex-wrap gap-3 mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+        <a href="/patients-check" class="btn btn-secondary" style="background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); border: none; padding: 0.875rem 1.75rem; border-radius: 12px; font-weight: 600; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-arrow-left"></i> Back to Check
+        </a>
+        <button type="submit" class="btn btn-primary" style="padding: 0.875rem 2rem; font-size: 1rem; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); border: none; box-shadow: var(--shadow-md); transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-check"></i> Register Patient
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .admin-page-container .form-control:focus {
+    outline: none;
+    border-color: #8b5cf6 !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+    transform: translateY(-1px);
+  }
+  .admin-page-container button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl) !important;
+  }
+  .admin-page-container a.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white;
+  }
+  @media (max-width: 768px) {
+    .admin-page-container {
+      margin-top: 1rem !important;
+      padding: 0 1rem;
+    }
+    .admin-page-container .profile-header-card {
+      padding: 1.5rem !important;
+    }
+    .admin-page-container > div:last-child {
+      padding: 1.5rem !important;
+    }
+  }
+</style>
+

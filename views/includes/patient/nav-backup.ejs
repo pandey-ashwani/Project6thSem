@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg patientNavBar">
+  <div class="container-fluid">
+    <!-- Brand/Logo -->
+    <a class="navbar-brand patient-brand" href="/patient-home">
+      <i class="fa-solid fa-heart-pulse"></i>
+      Patient Portal
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler patient-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#patientNavbar" aria-controls="patientNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="patientNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Home -->
+        <li class="nav-item">
+          <a class="nav-link" href="/patient-home">
+            <i class="fa-solid fa-house me-2"></i>Home
+          </a>
+        </li>
+
+        <!-- Health Records Dropdown -->
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-file-medical me-2"></i>Health Records
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-eye me-2"></i>View History</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-flask me-2"></i>Access Lab Results</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-shield-halved me-2"></i>Insurance Information</a></li>
+          </ul>
+        </li>
+
+        <!-- My Appointments Dropdown -->
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-calendar-check me-2"></i>My Appointments
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-day me-2"></i>Upcoming Appointments</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-clock-rotate-left me-2"></i>Appointment History</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-plus me-2"></i>Schedule New Appointment</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- Right side: Search, Profile, Auth -->
+      <div class="d-flex align-items-center gap-3">
+        <!-- Search Bar -->
+        <div class="patient-searchBar searchBar">
+          <input type="text" class="form-control" placeholder="Search doctors, hospitals...">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+
+        <!-- Profile -->
+        <div class="profile patient-profile">
+          <i class="fa-solid fa-user patient-profile-icon" onclick="window.location.href='/patient-profile'"></i>
+        </div>
+
+        <!-- Auth Links - Simple version -->
+        <div class="loginDiv d-none d-md-flex align-items-center gap-2">
+          <a href="/patient-signup" class="btn btn-outline-light btn-sm">Sign Up</a>
+          <a href="/patient-login" class="btn btn-light btn-sm">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

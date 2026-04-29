@@ -1,0 +1,110 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="admin-profile-container">
+  <!-- Profile Header Card -->
+  <div class="profile-header-card">
+    <div class="profile-avatar-section">
+      <div class="profile-avatar admin-avatar">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <div class="profile-title">
+        <h2><%= admin.name %></h2>
+        <span class="profile-badge admin-badge">Administrator</span>
+      </div>
+    </div>
+    <button class="btn-edit" data-bs-toggle="modal" data-bs-target="#editAdminModal">
+      <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+    </button>
+  </div>
+
+  <!-- Account Info Grid -->
+  <div class="profile-section-title">Account Information</div>
+  <div class="profile-info-grid">
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-user"></i></div>
+      <div class="info-content">
+        <label>Username</label>
+        <p><%= admin.username %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-envelope"></i></div>
+      <div class="info-content">
+        <label>Email</label>
+        <p><%= admin.email %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-phone"></i></div>
+      <div class="info-content">
+        <label>Contact Number</label>
+        <p><%= admin.phone %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-hospital"></i></div>
+      <div class="info-content">
+        <label>Hospital</label>
+        <p><%= admin.hospital %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-location-dot"></i></div>
+      <div class="info-content">
+        <label>District</label>
+        <p><%= admin.district %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon admin-icon"><i class="fa-solid fa-map"></i></div>
+      <div class="info-content">
+        <label>State</label>
+        <p><%= admin.state %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="profile-actions">
+    <a href="/logout" class="btn-logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Log Out
+    </a>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editAdminModal" tabindex="-1" aria-labelledby="editAdminModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAdminModalLabel">
+          <i class="fa-solid fa-pen-to-square me-2"></i>Edit Profile
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/admin-profile/update" method="POST">
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= admin.name %>" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="<%= admin.email %>" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="phone" class="form-label">Contact Number</label>
+            <input type="number" class="form-control" id="phone" name="phone" value="<%= admin.phone %>" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-check me-1"></i>Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

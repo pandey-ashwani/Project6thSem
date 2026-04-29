@@ -1,0 +1,18 @@
+<% layout("/layouts/doctor/boilerplate.ejs") %>
+
+<div class="container col-10 offset-1 mt-4">
+    <h3 class="col-6 offset-5 mt-4 mb-4">Patient History</h3>
+    <hr class="mb-4" />
+    <div class="d-flex" style="flex-wrap: wrap;">
+    <% for(let patient of allPatient) {%>
+            <div class="card col-6 ms-3 mt-3" style="width: 12rem;">
+                <div class="card-body">
+                    <h5 class="card-title"><%= patient.name %></h5>
+                    <p class="">Age :<%= patient.age %> </p>
+
+                    <a href="#" class="card-link" style="text-decoration: none;">Consult</a>
+                </div>
+            </div>
+    <% } %>
+</div>
+</div>

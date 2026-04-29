@@ -1,0 +1,296 @@
+<% layout("/layouts/doctor/boilerplate.ejs") %>
+<link rel="stylesheet" href="/styles-prescription-final.css">
+
+
+
+
+
+<div class="doctor-page-container">
+  <!-- Hospital Header -->
+  <div class="hospital-header">
+    <div class="hospital-name"><%= doctor.hospital.toUpperCase() %></div>
+    <div class="hospital-address">
+      <%= doctor.district %>, <%= doctor.state %>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="admin-page-header">
+    <div class="page-title">
+      <div class="page-icon appointment-icon">
+        <i class="fa-solid fa-file-prescription"></i>
+      </div>
+      <h2>Patient Prescription</h2>
+    </div>
+  </div>
+
+  <form method="post" action="/add-prescription" id="prescriptionForm">
+    <!-- Modern Patient Info Card -->
+    <div class="patient-info-modern">
+      <div class="patient-header-modern">
+        <div class="patient-avatar-large">
+          <i class="fa-solid fa-user-md"></i>
+        </div>
+        <div class="patient-meta-modern">
+          <h5><%= patient.name %></h5>
+          <div class="patient-disease-tag"><%= patient.disease %></div>
+        </div>
+      </div>
+      <div class="patient-details-grid">
+        <div class="patient-detail-item">
+          <div class="patient-detail-icon">
+            <i class="fa-solid fa-cake-candles"></i>
+          </div>
+          <div class="patient-detail-text">
+            <strong>Age</strong>
+            <span><%= patient.age %></span>
+          </div>
+        </div>
+        <div class="patient-detail-item">
+          <div class="patient-detail-icon">
+            <i class="fa-solid fa-fingerprint"></i>
+          </div>
+          <div class="patient-detail-text">
+            <strong>Aadhaar</strong>
+            <span><%= patient.aadhar || patient.username %></span>
+          </div>
+        </div>
+        <div class="patient-detail-item">
+          <div class="patient-detail-icon">
+            <i class="fa-solid fa-map-marker-alt"></i>
+          </div>
+          <div class="patient-detail-text">
+            <strong>Location</strong>
+            <span><%= patient.district %>, <%= patient.state %></span>
+          </div>
+        </div>
+        <div class="patient-detail-item">
+          <div class="patient-detail-icon">
+            <i class="fa-solid fa-calendar-day"></i>
+          </div>
+          <div class="patient-detail-text">
+            <strong>Consulted</strong>
+            <span><%= date %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prescription Table Card -->
+    <div class="modern-card prescription-table-card">
+      <div class="modern-card-header">
+        <div class="table-avatar">
+          <i class="fa-solid fa-pills"></i>
+        </div>
+        <div class="modern-meta">
+          <h5>Prescription</h5>
+          <span class="modern-tag">Medicines</span>
+        </div>
+      </div>
+      <div class="modern-card-body table-card-body">
+        <div class="mb-4">
+          <input type="text" id="medicineSearch" class="form-control table-search" placeholder="🔍 Search common medicines...">
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table prescription-table">
+            <thead class="prescription-thead">
+              <tr>
+                <th>Medicine</th>
+                <th>Dosage</th>
+                <th>Duration</th>
+                <th>Instructions</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prescription-table-body">
+              <!-- Initial empty row -->
+              <tr>
+                <td>
+                  <input name="medicine[]" type="text" class="form-control medicine-input" list="medicine-list" placeholder="Medicine Name" required />
+                </td>
+                <td>
+                  <input name="dosage[]" type="text" class="form-control" placeholder="1-0-1" pattern="[0-9]+-[0-9]+-[0-9]+" title="Format: 1-0-1" required />
+                </td>
+                <td>
+                  <input name="duration[]" type="text" class="form-control" placeholder="5 days" required />
+                </td>
+                <td>
+                  <input name="instructions[]" type="text" class="form-control" placeholder="After meals" />
+                </td>
+                <td>
+                  <button type="button" class="btn btn-remove" onclick="removeRow(this)">
+                    <i class="fa-solid fa-trash"></i> Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="button" onclick="addRow()" class="btn btn-add-medicine mb-3">
+          <i class="fa-solid fa-plus"></i> Add Medicine
+        </button>
+      </div>
+    </div>
+
+    <!-- Doctor Signature Footer -->
+    <div class="prescription-footer">
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="modern-detail">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span><strong>Qualification:</strong><br><%= doctor.qualification %></span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="modern-detail">
+            <i class="fa-solid fa-briefcase-medical"></i>
+            <span><strong>Specialization:</strong><br><%= doctor.specialization %></span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="modern-detail">
+            <i class="fa-solid fa-user-doctor"></i>
+            <span><strong>Doctor:</strong><br>Dr. <%= doctor.name %></span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-2 justify-content-end">
+        <button type="button" onclick="previewPrescription()" class="btn btn-outline-primary">
+          <i class="fa-solid fa-eye"></i> Preview
+        </button>
+        <button type="button" onclick="downloadPDF()" class="btn btn-success">
+          <i class="fa-solid fa-download"></i> PDF
+        </button>
+        <button type="submit" class="btn btn-primary save-btn">
+          <i class="fa-solid fa-save"></i> Save Prescription
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Medicine Datalist -->
+<datalist id="medicine-list">
+  <option value="Paracetamol 500mg Tablet">
+  <option value="Ibuprofen 400mg Tablet">
+  <option value="Amoxicillin 500mg Capsule">
+  <option value="Amlodipine 5mg Tablet">
+  <option value="Metformin 500mg Tablet">
+  <option value="Atenolol 50mg Tablet">
+  <option value="Losartan 50mg Tablet">
+  <option value="Atorvastatin 20mg Tablet">
+  <option value="Omeprazole 20mg Capsule">
+  <option value="Cetirizine 10mg Tablet">
+  <option value="Azithromycin 500mg Tablet">
+</datalist>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const datalist = document.getElementById('medicine-list');
+  const commonMedicines = [
+    'Paracetamol 500mg Tablet', 'Ibuprofen 400mg Tablet', 'Amoxicillin 500mg Capsule',
+    'Amlodipine 5mg Tablet', 'Metformin 500mg Tablet', 'Atenolol 50mg Tablet',
+    'Losartan 50mg Tablet', 'Atorvastatin 20mg Tablet', 'Omeprazole 20mg Capsule',
+    'Cetirizine 10mg Tablet', 'Azithromycin 500mg Tablet'
+  ];
+  
+  commonMedicines.forEach(medicine => {
+    const option = document.createElement('option');
+    option.value = medicine;
+    datalist.appendChild(option);
+  });
+
+  // Search filter
+  document.getElementById('medicineSearch').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase();
+    Array.from(datalist.options).forEach(option => {
+      option.hidden = !option.value.toLowerCase().includes(term);
+    });
+  });
+
+  // Form validation
+  document.getElementById('prescriptionForm').addEventListener('submit', function(e) {
+    let isValid = true;
+    const rows = document.querySelectorAll('#prescription-table-body tr');
+    
+    rows.forEach(row => {
+      const medicine = row.cells[0].querySelector('input').value.trim();
+      const dosage = row.cells[1].querySelector('input').value.trim();
+      const duration = row.cells[2].querySelector('input').value.trim();
+      
+      if (!medicine || !dosage || !duration) {
+        isValid = false;
+        row.style.backgroundColor = '#fee2e2';
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => row.style.backgroundColor = '', 3000);
+      }
+    });
+    
+    if (!isValid) {
+      e.preventDefault();
+      alert('Please fill all required fields in medicine rows.');
+    }
+  });
+});
+
+function addRow() {
+  const tbody = document.getElementById('prescription-table-body');
+  const row = tbody.insertRow();
+  row.innerHTML = `
+    <td>
+      <input name="medicine[]" type="text" class="form-control medicine-input" list="medicine-list" placeholder="Medicine Name" required />
+    </td>
+    <td>
+      <input name="dosage[]" type="text" class="form-control" placeholder="1-0-1" pattern="[0-9]+-[0-9]+-[0-9]+" title="Format: 1-0-1" required />
+    </td>
+    <td>
+      <input name="duration[]" type="text" class="form-control" placeholder="5 days" required />
+    </td>
+    <td>
+      <input name="instructions[]" type="text" class="form-control" placeholder="After meals" />
+    </td>
+    <td>
+      <button type="button" class="btn btn-remove" onclick="removeRow(this)">
+        <i class="fa-solid fa-trash"></i> Remove
+      </button>
+    </td>
+  `;
+}
+
+function removeRow(button) {
+  const tbody = document.getElementById('prescription-table-body');
+  const row = button.closest('tr');
+  if (tbody.rows.length > 1) {
+    row.remove();
+  } else {
+    alert('At least one medicine row required.');
+  }
+}
+
+function downloadPDF() {
+  window.print();
+}
+
+function previewPrescription() {
+  const medicines = Array.from(document.querySelectorAll('input[name="medicine[]"]')).map((input, i) => ({
+    medicine: input.value || 'N/A',
+    dosage: document.querySelectorAll(`input[name="dosage[]"]`)[i]?.value || 'N/A',
+    duration: document.querySelectorAll(`input[name="duration[]"]`)[i]?.value || 'N/A',
+    instructions: document.querySelectorAll(`input[name="instructions[]"]`)[i]?.value || ''
+  })).filter(m => m.medicine !== 'N/A');
+  
+  if (medicines.length === 0) {
+    alert('Please add medicines first!');
+    return;
+  }
+  
+  console.log('Prescription Preview:', medicines);
+  alert('✅ Preview OK! Check console for full prescription data.\n\nReady to save/print.');
+}
+
+function downloadPDF() {
+  window.print();
+  alert('📄 Use browser Print → Save as PDF for professional output');
+}
+

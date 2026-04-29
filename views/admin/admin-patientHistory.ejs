@@ -1,0 +1,65 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="admin-page-container">
+  <!-- Page Header -->
+  <div class="admin-page-header">
+    <div class="page-title">
+      <div class="page-icon">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+      </div>
+      <h2>Patient History</h2>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-count"><%= allPatient.length %></span>
+      <span class="stat-label">Total Patients</span>
+    </div>
+  </div>
+
+  <!-- Patient Grid -->
+  <div class="row g-4">
+    <% for(let patient of allPatient) { %>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="modern-card h-100">
+        <div class="modern-card-header">
+          <div class="modern-avatar patient-avatar">
+            <i class="fa-solid fa-user-injured"></i>
+          </div>
+          <div class="modern-meta">
+            <h5><%= patient.name %></h5>
+            <span class="modern-tag">Age: <%= patient.age %></span>
+          </div>
+        </div>
+        <div class="modern-card-body">
+          <div class="modern-detail">
+            <i class="fa-solid fa-virus"></i>
+            <span><%= patient.disease || 'N/A' %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-hospital"></i>
+            <span><%= patient.hospital || 'N/A' %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-location-dot"></i>
+            <span><%= patient.district || 'N/A' %></span>
+          </div>
+        </div>
+        <div class="modern-card-footer">
+          <a href="/patient-profile/<%= patient._id %>/view" class="btn-view">
+            <i class="fa-solid fa-eye me-1"></i>View Profile
+          </a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <% if(allPatient.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="fa-solid fa-clipboard-list"></i>
+    </div>
+    <p>No patients found</p>
+  </div>
+  <% } %>
+</div>
+

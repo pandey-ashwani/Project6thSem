@@ -1,0 +1,72 @@
+<% layout("/layouts/doctor/boilerplate.ejs") %>
+<link rel="stylesheet" href="/styles-appointments.css">
+
+<div class="doctor-page-container">
+  <!-- Page Header -->
+  <div class="admin-page-header">
+    <div class="page-title">
+      <div class="page-icon appointment-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+      <h2>Today's Appointments</h2>
+    </div>
+    <div class="stats-row">
+      <div class="stat-pill">
+        <span class="stat-count"><%= allPatient.length %></span>
+        <span class="stat-label">Total Patients</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patient Grid -->
+  <div class="row g-4">
+    <% for(let patient of allPatient) { %>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="modern-card h-100">
+        <div class="modern-card-header">
+          <div class="modern-avatar patient-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="modern-meta">
+            <h5><%= patient.name %></h5>
+            <span class="modern-tag"><%= patient.disease || 'General Checkup' %></span>
+          </div>
+        </div>
+        <div class="modern-card-body">
+          <div class="modern-detail">
+            <i class="fa-solid fa-cake-candles"></i>
+            <span>Age: <%= patient.age %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-fingerprint"></i>
+            <span>Aadhaar: <%= patient.aadhar %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-hospital"></i>
+            <span><%= patient.hospital %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-location-dot"></i>
+            <span><%= patient.district %>, <%= patient.state %></span>
+          </div>
+        </div>
+        <div class="modern-card-footer">
+          <a href="/prescription/<%= patient._id %>" class="btn-view">
+            <i class="fa-solid fa-user-doctor me-1"></i>Consult
+          </a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <% if(allPatient.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="fa-solid fa-calendar-xmark"></i>
+    </div>
+    <p>No appointments scheduled for today</p>
+  </div>
+  <% } %>
+</div>
+

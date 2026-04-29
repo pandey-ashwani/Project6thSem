@@ -1,0 +1,14 @@
+<% layout("layouts/superAdmin/boilerplate.ejs") %>
+<div class="row">
+    <h4 class="col-6 offset-5 mt-5 mb-4">My Profile</h4>
+<div class="card col-6 offset-4" style="width: 23rem;">
+    <div class="card-body">
+      <h5 class="card-title">Name : <%= superAdmin.name %></h5>
+      <h6 class="card-text">Email : <%= superAdmin.email %></h6>
+      <h6 class="card-text">Phone Number : <%= superAdmin.phone %></h6>
+      <h6 class="card-title">Username : <%= superAdmin.username %></h6>
+      <a href="#" class="card-link" style="text-decoration:none;">Update</a>
+      <a href="/logout" class="card-link" style="text-decoration:none;">Log Out</a>
+    </div>
+  </div>
+</div>

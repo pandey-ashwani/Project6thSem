@@ -1,0 +1,71 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="admin-page-container">
+  <!-- Page Header -->
+  <div class="admin-page-header">
+    <div class="page-title">
+      <div class="page-icon doctor-icon">
+        <i class="fa-solid fa-user-doctor"></i>
+      </div>
+      <h2>Doctor List</h2>
+    </div>
+    <div class="stats-row">
+      <div class="stat-pill">
+        <span class="stat-count"><%= allDoctor.length %></span>
+        <span class="stat-label">Total Doctors</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-count"><%= allDoctor.length %></span>
+        <span class="stat-label">Available Today</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Doctor Grid -->
+  <div class="row g-4">
+    <% for(let doctor of allDoctor) { %>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+      <div class="modern-card h-100">
+        <div class="modern-card-header">
+          <div class="modern-avatar doctor-avatar">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <div class="modern-meta">
+            <h5><%= doctor.name %></h5>
+            <span class="modern-tag"><%= doctor.specialization || 'General' %></span>
+          </div>
+        </div>
+        <div class="modern-card-body">
+          <div class="modern-detail">
+            <i class="fa-solid fa-envelope"></i>
+            <span><%= doctor.email %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-id-card"></i>
+            <span><%= doctor.username %></span>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span><%= doctor.qualification || 'N/A' %></span>
+          </div>
+        </div>
+        <div class="modern-card-footer">
+          <a href="/doctor-profile/<%= doctor._id %>/view" class="btn-view">
+            <i class="fa-solid fa-eye me-1"></i>View Profile
+          </a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+
+  <% if(allDoctor.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">
+      <i class="fa-solid fa-user-doctor"></i>
+    </div>
+    <p>No doctors found</p>
+  </div>
+  <% } %>
+</div>
+

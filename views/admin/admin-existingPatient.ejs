@@ -1,0 +1,73 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="admin-page-container" style="max-width: 560px; margin-top: 3rem;">
+  <!-- Header -->
+  <div class="profile-header-card" style="padding: 2rem; margin-bottom: 1.5rem;">
+    <div class="profile-avatar-section" style="gap: 1rem;">
+      <div class="profile-avatar" style="width: 64px; height: 64px; font-size: 1.5rem; background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);">
+        <i class="fa-solid fa-user-check"></i>
+      </div>
+      <div class="profile-title">
+        <h2 style="font-size: 1.5rem;">Check Patient</h2>
+        <span class="profile-badge" style="background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);">Verify Registration</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Check Form Card -->
+  <div style="background: var(--bg-secondary); border-radius: 24px; padding: 2rem; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);"></div>
+
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem; text-align: center;">
+      Enter patient details to check if they are already registered in the system.
+    </p>
+
+    <form method="post" action="/patients-check">
+      <div class="mb-4">
+        <label class="form-label" style="font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+          <i class="fa-solid fa-user me-2" style="color: #0ea5e9;"></i>Patient Name
+        </label>
+        <input type="text" name="name" class="form-control" placeholder="Enter full name" required
+          style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label" style="font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">
+          <i class="fa-solid fa-id-card me-2" style="color: #0ea5e9;"></i>Aadhaar Number
+        </label>
+        <input type="text" name="aadhar" class="form-control" placeholder="Enter 12-digit Aadhaar" maxlength="12" required
+          style="border: 2px solid var(--border-color); border-radius: 12px; padding: 0.875rem 1.25rem; font-size: 1rem; transition: var(--transition); background: var(--bg-secondary);">
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100" style="padding: 1rem; font-size: 1.05rem; border-radius: 12px; background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%); border: none; box-shadow: var(--shadow-md); transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+        <i class="fa-solid fa-magnifying-glass"></i> Check Patient
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .admin-page-container .form-control:focus {
+    outline: none;
+    border-color: #0ea5e9 !important;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1) !important;
+    transform: translateY(-1px);
+  }
+  .admin-page-container button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl) !important;
+  }
+  @media (max-width: 768px) {
+    .admin-page-container {
+      margin-top: 1.5rem !important;
+      padding: 0 1rem;
+    }
+    .admin-page-container .profile-header-card {
+      padding: 1.5rem !important;
+    }
+    .admin-page-container > div:last-child {
+      padding: 1.5rem !important;
+    }
+  }
+</style>
+

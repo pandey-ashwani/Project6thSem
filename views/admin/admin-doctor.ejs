@@ -1,0 +1,45 @@
+<% layout("layouts/admin/boilerplate.ejs") %>
+
+<div class="row" style="margin-top: 8%;">
+
+    <h2 class="col-6 " style="margin-left: 37%;">Enter Doctor Details</h2>
+    <form method="post" action="/add-doctor" class="col-6 offset-3">
+
+        <label for="username" class="form-label mt-4">Username:</label>
+        <input type="text" name="username" id="username" class="form-control">
+
+        <label for="name" class="form-label mt-4">Name:</label>
+        <input type="text" name="name" id="name" class="form-control">
+
+        <label for="email" class="form-label mt-4">Email:</label>
+        <input type="text" name="email" id="email" class="form-control">
+
+        <label for="phone" class="form-label mt-3">Contact Number:</label>
+        <input type="text" name="phone" id="phone" class="form-control">
+
+        <label for="specialization" class="form-label mt-3">Specialization:</label>
+        <input type="text" name="specialization" id="specialization" class="form-control">
+
+        <label for="experience" class="form-label mt-3">Year of Experience:</label>
+        <input type="text" name="experience" id="experience" class="form-control">
+
+        <label for="qualification" class="form-label mt-4">Qualifications:</label>
+        <input type="text" name="qualification" id="qualification" class="form-control"> 
+        
+        <label for="hospital" class="form-label mt-4">Hospital: </label>
+        <input type="text" name="hospital" id="hospital" class="form-control" value="<%= admin.hospital %>" readonly>
+
+        <label for="district" class="form-label mt-4">District: </label>
+        <input type="text" name="district" id="district" class="form-control" value="<%= admin.district %>" readonly>
+
+        <label for="state" class="form-label mt-4">state: </label>
+        <input type="text" name="state" id="state" class="form-control" value="<%= admin.state %>" readonly>
+
+        <label for="password" class="form-label mt-3">Password:</label>
+        <input type="text" name="password" id="password" class="form-control">
+
+        <button class="btn btn-success mt-4 mb-4">Add</button>
+
+    </form>
+
+</div>

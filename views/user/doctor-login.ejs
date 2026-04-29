@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login | SwasthyaSankalp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+<body>
+    <p><%= error %></p>
+    <div class="container row" >
+        <form method="post" action="/login-doctor" class="col-6 offset-4" style="margin-top: 100px;">
+
+            <h3 class="col-6 offset-4" style="margin-bottom: 60px;">Log In as Doctor</h3>
+
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control">
+
+            <label for="password" class="form-label">Password</label>
+            <input type="text" name="password" class="form-control">
+
+            <!-- <label for="doctor_username" class="form-label">Username</label>
+            <input type="text" name="doctor_username" class="form-control">
+
+            <label for="doctor_password" class="form-label">Password</label>
+            <input type="text" name="doctor_password" class="form-control"> -->
+
+            <button class="btn btn-outline-dark mt-4">Log In</button>
+
+
+        </form>
+    </div>
+
+    <div class="footerCont">
+        <div>
+        <a>&copy 2024 SwasthyaSankalp, Inc.</a>
+        <a>Privacy</a>
+        <a>Terms</a>
+        </div>
+        <div>
+        <i class="fa-brands fa-square-facebook"></i>
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        </div>
+    </div>
+
+</body>
+</html>
