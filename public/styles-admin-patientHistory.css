@@ -270,12 +270,17 @@
   color: var(--text-secondary);
   z-index: 10;
   pointer-events: none;
+  /* border: #0d9488 2px solid; */
+}
+
+.patientSearchb{
+  width: 100% ! important;
 }
 
 .form-select {
   min-width: 180px;
   border-radius: 12px;
-  border: 2px solid var(--glass-border);
+  border: 2px solid #e2e8f0;
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
 }
@@ -284,6 +289,7 @@
   border-radius: 12px;
   padding: 0.5rem 1rem;
   white-space: nowrap;
+  color: #e2e8f0;
 }
 
 /* Patient Views */
