@@ -3,65 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Patient Registration | SwasthyaSankalp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .signup-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .signup-header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 40px 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .signup-header .logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .signup-header .logo i {
+            font-size: 36px;
+            color: #11998e;
+        }
+
+        .signup-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .signup-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .signup-body {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #11998e;
+            box-shadow: 0 0 0 4px rgba(17, 153, 142, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .note-text {
+            background: #f0fdf4;
+            border-left: 4px solid #11998e;
+            padding: 12px 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #166534;
+        }
+
+        .note-text i {
+            margin-right: 8px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #11998e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .footer-links a {
+            color: #11998e;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body style="padding-top: 0;">
+<body>
 
-    <button class="btn btn-success mt-3 ms-3" onclick="window.location.href='/'" >
-        <i class="fa-solid fa-arrow-left-long mt-1 ms-1"></i> Back</button>
-<div class="row" style="margin-top: 10%;">
-    <img src="logo.png" alt="Logo" class="logoImg">
-    <h2 class="col-6 " style="margin-left: 30%;">Enter Patient Details</h2>
-    <form method="post" action="/patient-signup" class="col-6 offset-3">
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <div class="logo">
+                    <i class="fa-solid fa-user-injured"></i>
+                </div>
+                <h1>Patient Registration</h1>
+                <p>Join SwasthyaSankalp Health Management System</p>
+            </div>
 
-        <label for="name" class="form-label mt-4">Name:</label>
-        <input type="text" name="name" id="name" class="form-control">
+            <div class="signup-body">
+                <div class="note-text">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Please contact your hospital admin to get registered in the system.
+                </div>
 
-        <label for="age" class="form-label mt-3">Age:</label>
-        <input type="text" name="age" id="age" class="form-control">
+                <form method="POST" action="/patient-signup" id="signupForm">
+                    <div class="form-group">
+                        <label for="name">
+                            <i class="fa-solid fa-user"></i> Full Name
+                        </label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter full name" required>
+                    </div>
 
-        <label for="username" class="form-label mt-3">Contact Number:</label>
-        <input type="text" name="username" id="username" class="form-control">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">
+                                <i class="fa-solid fa-calendar"></i> Age
+                            </label>
+                            <input type="number" name="age" id="age" class="form-control" placeholder="Enter age" required>
+                        </div>
 
-        <label for="disease" class="form-label mt-3">Disease:</label>
-        <input type="text" name="disease" id="disease" class="form-control">
+                        <div class="form-group">
+                            <label for="username">
+                                <i class="fa-solid fa-phone"></i> Contact Number
+                            </label>
+                            <input type="tel" name="username" id="username" class="form-control" placeholder="10-digit number" required>
+                        </div>
+                    </div>
 
-        <label for="district" class="form-label mt-3">District:</label>
-        <input type="text" name="district" id="district" class="form-control">
+                    <div class="form-group">
+                        <label for="disease">
+                            <i class="fa-solid fa-stethoscope"></i> Disease/Condition
+                        </label>
+                        <input type="text" name="disease" id="disease" class="form-control" placeholder="Enter disease/condition" required>
+                    </div>
 
-        <label for="state" class="form-label mt-3">State:</label>
-        <input type="text" name="state" id="state" class="form-control">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="district">
+                                <i class="fa-solid fa-map-pin"></i> District
+                            </label>
+                            <input type="text" name="district" id="district" class="form-control" placeholder="Enter district" required>
+                        </div>
 
-        <label for="hospital" class="form-label mt-3">Hospital:</label>
-        <input type="text" name="hospital" id="hospital" class="form-control">
+                        <div class="form-group">
+                            <label for="state">
+                                <i class="fa-solid fa-map"></i> State
+                            </label>
+                            <input type="text" name="state" id="state" class="form-control" placeholder="Enter state" required>
+                        </div>
+                    </div>
 
-        <label for="doctorName" class="form-label mt-3">Assigned Doctor Name:</label>
-        <input type="text" name="doctorName" id="doctorName" class="form-control" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hospital">
+                                <i class="fa-solid fa-hospital"></i> Hospital
+                            </label>
+                            <input type="text" name="hospital" id="hospital" class="form-control" placeholder="Enter hospital" required>
+                        </div>
 
-        <label for="password" class="form-label mt-4">Password:</label>
-        <input type="text" name="password" id="password" class="form-control">
-        
+                        <div class="form-group">
+                            <label for="doctorName">
+                                <i class="fa-solid fa-user-md"></i> Assigned Doctor
+                            </label>
+                            <input type="text" name="doctorName" id="doctorName" class="form-control" placeholder="Doctor's name" required>
+                        </div>
+                    </div>
 
-        <button class="btn btn-success mt-4 mb-4">Add</button>
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fa-solid fa-lock"></i> Password
+                        </label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+                    </div>
 
-    </form>
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-user-plus me-2"></i>
+                        Register as Patient
+                    </button>
 
-    <div class="footerCont">
-        <div>
-        <a>&copy 2024 SwasthyaSankalp, Inc.</a>
-        <a>Privacy</a>
-        <a>Terms</a>
-        </div>
-        <div>
-        <i class="fa-brands fa-square-facebook"></i>
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-linkedin"></i>
+                    <div class="back-link">
+                        <a href="/">
+                            <i class="fa-solid fa-arrow-left-long me-1"></i>
+                            Back to Home
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Support</a>
+            </div>
         </div>
     </div>
 
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

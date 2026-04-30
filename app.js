@@ -399,6 +399,7 @@ app.get("/add-doctor",isAdminLoggedIn,(req,res)=>{
 
 app.post("/add-doctor",isAdminLoggedIn,async (req,res)=>{
     let {name , email , phone , specialization , experience , qualification ,district , state , hospital, username, password}= req.body;
+    console.log(req.body);
 
     try {
         let registeredDoctor = new Doctor({name , email , phone , specialization , experience , qualification , district , state , hospital, username , admin: req.user._id});
