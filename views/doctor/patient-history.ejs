@@ -1,29 +1,260 @@
 <% layout("/layouts/doctor/boilerplate.ejs") %>
 
-<div class="container col-10 offset-1 mt-4">
-<h3 class="text-center mt-4 mb-4">My Patients - Consult & Prescribe</h3>
+<div class="doctor-page-container">
+  <!-- Page Header -->
+  <div class="doctor-page-header">
+    <div class="page-title">
+      <div class="page-icon">
+        <i class="fa-solid fa-users-rays"></i>
+      </div>
+      <h2>My Patients</h2>
+    </div>
+    
     <% if (typeof allPatients !== 'undefined' && allPatients.length > 0) { %>
-<p class="text-center text-muted mb-4">Click "Consult & Prescribe" to consult patients (<%- allPatients.length %> patients)</p>
-    <% } else { %>
-    <div class="text-center py-5">
-      <i class="fa-solid fa-users fa-3x text-muted mb-3"></i>
-      <p class="text-muted">No patients assigned yet.</p>
+    <div class="stat-pill">
+      <span class="stat-count"><%= allPatients.length %></span>
+      <span class="stat-label">Total Patients</span>
     </div>
     <% } %>
-    <hr class="mb-4" />
-    <div class="row">
-    <% for(let patient of allPatient) {%>
-                <div class="col-md-6 col-lg-4 mb-4">
-                  <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body text-center p-4">
-                      <i class="fa-solid fa-user-injured fa-2x text-primary mb-3"></i>
-                <div class="card-body">
-                    <h5 class="card-title"><%= patient.name %></h5>
-                    <p class="">Age :<%= patient.age %> </p>
+    
+    <div class="page-controls">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="patientSearch" class="form-control" placeholder="Search patients by name...">
+      </div>
+      <select id="diseaseFilter" class="form-select">
+        <option value="">All Diseases</option>
+      </select>
+      <button id="toggleView" class="btn">
+        <i class="fa-solid fa-table-cells"></i> Table View
+      </button>
+    </div>
+  </div>
 
-class="btn btn-primary btn-sm">Consult & Prescribe</a>
-                </div>
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="text-center py-5 d-none">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Patient Data Script -->
+  <script>
+    window.patientData = <%- JSON.stringify(allPatients || []) %>;
+    window.totalPatients = <%= (allPatients || []).length %>;
+  </script>
+
+  <% if (typeof allPatients !== 'undefined' && allPatients.length > 0) { %>
+  <p class="text-center text-muted mb-4">Click "Consult & Prescribe" to view patient details and create prescriptions</p>
+  <% } %>
+
+  <!-- Cards View (Default) -->
+  <div id="cardsView" class="patient-views active">
+    <div class="patient-cards-grid" id="patientCards">
+      <!-- Cards will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div id="tableView" class="patient-views">
+    <div class="table-responsive">
+      <table class="table patient-table">
+        <thead>
+          <tr>
+            <th data-sort="name"><i class="fa-solid fa-sort"></i> Name</th>
+            <th data-sort="age"><i class="fa-solid fa-sort"></i> Age</th>
+            <th data-sort="disease"><i class="fa-solid fa-sort"></i> Disease</th>
+            <th data-sort="username"><i class="fa-solid fa-sort"></i> Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="patientTableBody">
+          <!-- Rows will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">
+      <i class="fa-solid fa-user-injured"></i>
+    </div>
+    <h3>No Patients Yet</h3>
+    <p>No patients have been assigned to you yet. Patients will appear here once assigned by the admin.</p>
+  </div>
+
+</div>
+
+<!-- JavaScript for Patient History Functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const patientData = window.patientData || [];
+  const cardsView = document.getElementById('cardsView');
+  const tableView = document.getElementById('tableView');
+  const patientCards = document.getElementById('patientCards');
+  const patientTableBody = document.getElementById('patientTableBody');
+  const emptyState = document.getElementById('emptyState');
+  const loadingSpinner = document.getElementById('loadingSpinner');
+  const searchInput = document.getElementById('patientSearch');
+  const diseaseFilter = document.getElementById('diseaseFilter');
+  const toggleViewBtn = document.getElementById('toggleView');
+  
+  let isTableView = false;
+  let filteredPatients = [...patientData];
+
+  // Initialize disease filter options
+  function initDiseaseFilter() {
+    const diseases = [...new Set(patientData.map(p => p.disease).filter(Boolean))];
+    diseaseFilter.innerHTML = '<option value="">All Diseases</option>';
+    diseases.forEach(disease => {
+      const option = document.createElement('option');
+      option.value = disease;
+      option.textContent = disease;
+      diseaseFilter.appendChild(option);
+    });
+  }
+
+  // Render cards view
+  function renderCards(patients) {
+    if (patients.length === 0) {
+      patientCards.innerHTML = '';
+      return;
+    }
+    
+    patientCards.innerHTML = patients.map(patient => `
+      <div class="modern-card">
+        <div class="modern-card-header">
+          <div class="modern-avatar">
+            <i class="fa-solid fa-user-injured"></i>
+          </div>
+          <div class="modern-meta">
+            <h5>${patient.name || 'Unknown'}</h5>
+            ${patient.disease ? `<span class="modern-tag">${patient.disease}</span>` : ''}
+          </div>
+        </div>
+        <div class="modern-card-body">
+          <div class="modern-detail">
+            <i class="fa-solid fa-cake-candles"></i>
+            <div>
+              <span class="detail-label">Age</span>
+              <span>${patient.age || 'N/A'}</span>
             </div>
-    <% } %>
-</div>
-</div>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-phone"></i>
+            <div>
+              <span class="detail-label">Phone</span>
+              <span>${patient.username || 'N/A'}</span>
+            </div>
+          </div>
+          <div class="modern-detail">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>
+              <span class="detail-label">Address</span>
+              <span>${patient.address || patient.district || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modern-card-footer">
+          <a href="/doctor/patient/${patient._id}" class="btn-consult">
+            <i class="fa-solid fa-eye"></i> View Details
+          </a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Render table view
+  function renderTable(patients) {
+    if (patients.length === 0) {
+      patientTableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No patients found</td></tr>';
+      return;
+    }
+    
+    patientTableBody.innerHTML = patients.map(patient => `
+      <tr>
+        <td>
+          <div class="d-flex align-items-center gap-2">
+            <div class="modern-avatar" style="width:40px;height:40px;font-size:1rem;">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <span class="fw-semibold">${patient.name || 'Unknown'}</span>
+          </div>
+        </td>
+        <td>${patient.age || 'N/A'}</td>
+        <td>${patient.disease || 'N/A'}</td>
+        <td>${patient.username || 'N/A'}</td>
+        <td>
+          <a href="/doctor/patient/${patient._id}" class="table-action-btn">
+            <i class="fa-solid fa-eye"></i> View
+          </a>
+            <i class="fa-solid fa-file-prescription"></i> Consult
+          </a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Filter patients
+  function filterPatients() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedDisease = diseaseFilter.value;
+    
+    filteredPatients = patientData.filter(patient => {
+      const matchesSearch = !searchTerm || 
+        (patient.name && patient.name.toLowerCase().includes(searchTerm));
+      const matchesDisease = !selectedDisease || patient.disease === selectedDisease;
+      return matchesSearch && matchesDisease;
+    });
+
+    renderView();
+  }
+
+  // Render current view
+  function renderView() {
+    if (filteredPatients.length === 0) {
+      cardsView.classList.remove('active');
+      tableView.classList.remove('active');
+      emptyState.classList.remove('d-none');
+      return;
+    }
+
+    emptyState.classList.add('d-none');
+    
+    if (isTableView) {
+      cardsView.classList.remove('active');
+      tableView.classList.add('active');
+      renderTable(filteredPatients);
+    } else {
+      tableView.classList.remove('active');
+      cardsView.classList.add('active');
+      renderCards(filteredPatients);
+    }
+  }
+
+  // Toggle view
+  function toggleView() {
+    isTableView = !isTableView;
+    toggleViewBtn.innerHTML = isTableView ? 
+      '<i class="fa-solid fa-cards"></i> Card View' : 
+      '<i class="fa-solid fa-table-cells"></i> Table View';
+    renderView();
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', filterPatients);
+  diseaseFilter.addEventListener('change', filterPatients);
+  toggleViewBtn.addEventListener('click', toggleView);
+
+  // Initialize
+  if (patientData.length > 0) {
+    initDiseaseFilter();
+    renderView();
+  } else {
+    cardsView.classList.remove('active');
+    tableView.classList.remove('active');
+    emptyState.classList.remove('d-none');
+  }
+});
+</script>

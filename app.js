@@ -20,7 +20,7 @@ const Policy = require("./model/policy.js");
 
 const { fail } = require("assert");
 const { isatty } = require("tty");
-const {isAdminLoggedIn , isDoctorLoggedIn , isSuperAdminLoggedIn ,isPatientLoggedIn, verifyAdminDoctors , verifyAdminPatients , verifyDoctorPatients} = require("./middleware.js");
+const {isAdminLoggedIn , isDoctorLoggedIn , isSuperAdminLoggedIn ,isPatientLoggedIn, verifyAdminDoctors , verifyAdminPatients , verifyDoctorPatients , verifyDoctorPatientsForHistory , verifyTodayPatients, verifyUpcomingPatients} = require("./middleware.js");
 const patient = require("./model/patient.js");
 
 
@@ -142,15 +142,36 @@ app.get("/doctor-home",isDoctorLoggedIn,(req,res)=>{
     res.render("doctor/index.ejs");
 })
 
-app.get("/doctor-patient-history",isDoctorLoggedIn,verifyDoctorPatients,async (req,res)=>{
+app.get("/doctor-patient-history",isDoctorLoggedIn,verifyDoctorPatientsForHistory,async (req,res)=>{
     res.render("doctor/patient-history.ejs",{allPatients: req.allPatients});
 }) 
 
-app.get("/doctor-patient-appointment",isDoctorLoggedIn,verifyDoctorPatients,async (req,res)=>{
+
+app.get("/doctor/patient/:id", isDoctorLoggedIn, async (req, res) => {
+    console.log("Route hit");
+    try {
+        const patient = await Patient.findById(req.params.id)
+            .populate("consultations.doctor");
+
+        if (!patient) {
+            return res.status(404).send("Patient not found");
+        }
+
+        res.render("doctor/patient-details.ejs", { patient });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
+
+
+app.get("/doctor-patient-appointment",isDoctorLoggedIn,verifyTodayPatients,async (req,res)=>{
     res.render("doctor/today-appointment.ejs",{allPatient:req.allPatients});
 }) 
 
-app.get("/doctor-upcoming-appointment",isDoctorLoggedIn,verifyDoctorPatients,async (req,res)=>{
+app.get("/doctor-upcoming-appointment",isDoctorLoggedIn,verifyUpcomingPatients,async (req,res)=>{
     res.render("doctor/upcoming-appointment.ejs",{allPatient:req.allPatients});
 }) 
 
@@ -186,8 +207,14 @@ app.get("/prescription/:id",isDoctorLoggedIn,async (req,res)=>{
     let {id} = req.params;
     let doctor = req.user;
     let patient = await Patient.findById(id);
-    if (!patient || patient.doctor.toString() !== doctor._id.toString()) {
-        req.flash("error", "Patient not accessible");
+    
+    // Check if there's an active consultation with this doctor
+    const activeConsultation = patient.consultations.find(c => 
+        c.status === 'active' && c.doctor.toString() === doctor._id.toString()
+    );
+    
+    if (!patient || !activeConsultation) {
+        req.flash("error", "Patient not accessible or no active consultation");
         return res.redirect("/doctor-patient-history");
     }
     res.render("doctor/prescription.ejs",{doctor,patient});
@@ -207,9 +234,13 @@ app.post("/add-prescription", isDoctorLoggedIn, async (req, res) => {
             return res.redirect("/doctor-patient-history");
         }
 
-        // Verify doctor-patient relationship
-        if (patient.doctor.toString() !== req.user._id.toString()) {
-            req.flash("error", "Unauthorized access to patient");
+        // Find the active consultation for this doctor
+        const activeConsultation = patient.consultations.find(c => 
+            c.status === 'active' && c.doctor.toString() === req.user._id.toString()
+        );
+        
+        if (!activeConsultation) {
+            req.flash("error", "No active consultation found for this patient");
             return res.redirect("/doctor-patient-history");
         }
 
@@ -235,9 +266,10 @@ app.post("/add-prescription", isDoctorLoggedIn, async (req, res) => {
             return res.redirect(`/prescription/${patientId}`);
         }
 
-        patient.prescriptions.push({
+        // Add prescription to the active consultation
+        activeConsultation.prescriptions.push({
             medicines: medicines,
-            doctor: req.user._id
+            date: new Date()
         });
 
         await patient.save();
@@ -366,7 +398,14 @@ app.post("/new-patient", isAdminLoggedIn, async (req, res) => {
             state,
             hospital,
             admin: req.user._id,
-            doctor: doctor._id
+            doctor: doctor._id,
+            consultations: [{
+                disease: disease,
+                doctor: doctor._id,
+                doctorName: doctor.name,
+                startDate: new Date(),
+                status: 'active'
+            }]
         });
 
         await Patient.register(newPatient, password);
@@ -384,6 +423,118 @@ app.post("/new-patient", isAdminLoggedIn, async (req, res) => {
         }
 
         res.redirect("/new-patient");
+    }
+});
+
+// Route to assign or reassign doctor to patient
+app.get("/assign-doctor/:id", isAdminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        let patient = await Patient.findById(id);
+        if (!patient) {
+            req.flash("error", "Patient not found");
+            return res.redirect("/patient-history");
+        }
+        
+        let admin = req.user;
+        let doctors = await Doctor.find({ admin: admin._id });
+        
+        res.render("admin/admin-assignDoctor.ejs", { patient, doctors });
+    } catch (err) {
+        console.log(err);
+        req.flash("error", "Error loading assign doctor page");
+        res.redirect("/patient-history");
+    }
+});
+
+app.post("/assign-doctor/:id", isAdminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        let { doctorId, disease, appointmentDate } = req.body;
+        
+        let patient = await Patient.findById(id);
+        if (!patient) {
+            req.flash("error", "Patient not found");
+            return res.redirect("/patient-history");
+        }
+        
+        let doctor = await Doctor.findById(doctorId);
+        if (!doctor) {
+            req.flash("error", "Doctor not found");
+            return res.redirect(`/assign-doctor/${id}`);
+        }
+        
+        // Parse appointment date or use today
+        let appointmentDateObj = appointmentDate ? new Date(appointmentDate) : new Date();
+        appointmentDateObj.setHours(0, 0, 0, 0);
+        
+        // Check if there's an active consultation - end it first and move to history
+        let activeConsultation = patient.consultations.find(c => c.status === 'active');
+        if (activeConsultation) {
+            activeConsultation.endDate = new Date();
+            activeConsultation.status = 'completed';
+        }
+        
+        // Create new consultation (for history tracking)
+        patient.consultations.push({
+            disease: disease || patient.disease,
+            doctor: doctor._id,
+            doctorName: doctor.name,
+            startDate: new Date(),
+            status: 'active'
+        });
+        
+        // Create new appointment (for scheduling)
+        patient.appointments.push({
+            doctor: doctor._id,
+            doctorName: doctor.name,
+            disease: disease || patient.disease,
+            appointmentDate: appointmentDateObj,
+            status: 'pending'
+        });
+        
+        // Update the top-level doctor field for backward compatibility
+        patient.doctor = doctor._id;
+        patient.disease = disease || patient.disease;
+        
+        await patient.save();
+        
+        req.flash("success", `Doctor ${doctor.name} assigned for ${disease || patient.disease} on ${appointmentDateObj.toLocaleDateString()}`);
+        res.redirect(`/patient-profile/${id}/view`);
+    } catch (err) {
+        console.log(err);
+        req.flash("error", "Error assigning doctor");
+        res.redirect("/patient-history");
+    }
+});
+
+// Route to end current consultation
+app.post("/end-consultation/:id", isAdminLoggedIn, async (req, res) => {
+    try {
+        let { id } = req.params;
+        
+        let patient = await Patient.findById(id);
+        if (!patient) {
+            req.flash("error", "Patient not found");
+            return res.redirect("/patient-history");
+        }
+        
+        // End active consultation
+        let activeConsultation = patient.consultations.find(c => c.status === 'active');
+        if (activeConsultation) {
+            activeConsultation.endDate = new Date();
+            activeConsultation.status = 'completed';
+            await patient.save();
+            req.flash("success", "Consultation ended and moved to history");
+        } else {
+            req.flash("error", "No active consultation to end");
+        }
+        
+        res.redirect(`/patient-profile/${id}/view`);
+    } catch (err) {
+        console.log(err);
+        req.flash("error", "Error ending consultation");
+        res.redirect("/patient-history");
     }
 });
 
@@ -603,14 +754,29 @@ app.get("/patient-signup",(req,res)=>{
 
 app.post("/patient-signup",async (req,res)=>{
     let {name , age , username ,disease ,district,state ,hospital, doctorName , password} = req.body;
-    let newPatient = new Patient({name , age ,username , disease ,district,state ,hospital});
     let doctor = await Doctor.findOne({name: doctorName});
     if(!doctor){
         req.flash("error","The doctor Name you Enter is not registered at SwasthyaSankalp");
         return res.redirect("/patient-signup");
     }
-    newPatient.admin = doctor.admin;
-    newPatient.doctor = doctor._id;
+    let newPatient = new Patient({
+        name, 
+        age,
+        username, 
+        disease,
+        district,
+        state,
+        hospital,
+        admin: doctor.admin,
+        doctor: doctor._id,
+        consultations: [{
+            disease: disease,
+            doctor: doctor._id,
+            doctorName: doctor.name,
+            startDate: new Date(),
+            status: 'active'
+        }]
+    });
     await Patient.register(newPatient,password);
     res.redirect("/patient-home");
 });

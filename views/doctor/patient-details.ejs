@@ -1,0 +1,266 @@
+<% layout("/layouts/doctor/boilerplate.ejs") %>
+
+<%
+  // Get active consultation
+  let activeConsultation = null;
+  let currentDoctor = null;
+  if (patient.consultations && patient.consultations.length > 0) {
+    // Find active consultation
+    activeConsultation = patient.consultations.find(c => c.status === 'active');
+  }
+%>
+
+<div class="patient-details-container">
+  <!-- Detail Header Card -->
+  <div class="detail-header-card">
+    <div class="detail-avatar-section">
+      <div class="detail-avatar">
+        <i class="fa-solid fa-user-injured"></i>
+      </div>
+      <div class="detail-title">
+        <h2><%= patient.name %></h2>
+        <span class="detail-badge">
+          <i class="fa-solid fa-user-injured me-1"></i>Patient
+        </span>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <a href="/doctor/prescription/<%= patient._id %>" class="btn-prescribe">
+        <i class="fa-solid fa-file-prescription"></i> New Prescription
+      </a>
+    </div>
+  </div>
+
+  <!-- Patient Information Grid -->
+  <div class="profile-section-title">
+    <i class="fa-solid fa-user"></i> Patient Information
+  </div>
+  <div class="profile-info-grid">
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="info-content">
+        <label>Name</label>
+        <p><%= patient.name %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-cake-candles"></i>
+      </div>
+      <div class="info-content">
+        <label>Age</label>
+        <p><%= patient.age %> years</p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-phone"></i>
+      </div>
+      <div class="info-content">
+        <label>Contact Number</label>
+        <p><%= patient.username %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-virus"></i>
+      </div>
+      <div class="info-content">
+        <label>Current Disease</label>
+        <p><%= patient.disease || 'N/A' %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-hospital"></i>
+      </div>
+      <div class="info-content">
+        <label>Hospital</label>
+        <p><%= patient.hospital || 'N/A' %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      <div class="info-content">
+        <label>District</label>
+        <p><%= patient.district || 'N/A' %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-map"></i>
+      </div>
+      <div class="info-content">
+        <label>State</label>
+        <p><%= patient.state || 'N/A' %></p>
+      </div>
+    </div>
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-venus-mars"></i>
+      </div>
+      <div class="info-content">
+        <label>Gender</label>
+        <p><%= patient.gender || 'N/A' %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointments Section -->
+  <% if (patient.appointments && patient.appointments.length > 0) { %>
+  <div class="profile-section-title">
+    <i class="fa-solid fa-calendar-check"></i> Appointments & Visits
+  </div>
+  <div style="background: var(--bg-secondary); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-color); margin-bottom: 2rem;">
+    <% 
+      const sortedAppointments = [...patient.appointments].sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
+    %>
+    <% sortedAppointments.forEach((appointment, index) => { %>
+      <div style="display: flex; align-items: center; padding: 1rem; <%= index > 0 ? 'border-top: 1px solid var(--border-color);' : '' %>">
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: <%= appointment.status === 'pending' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' : appointment.status === 'today' ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : appointment.status === 'completed' ? 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)' : 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; %>; display: flex; align-items: center; justify-content: center; color: white; margin-right: 1rem; flex-shrink: 0;">
+          <i class="fa-solid <%= appointment.status === 'pending' ? 'fa-clock' : appointment.status === 'today' ? 'fa-calendar-day' : appointment.status === 'completed' ? 'fa-check' : 'fa-times' %>"></i>
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+            <strong><%= appointment.disease %></strong>
+            <span style="font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 20px; background: <%= appointment.status === 'pending' ? 'rgba(245, 158, 11, 0.1)' : appointment.status === 'today' ? 'rgba(59, 130, 246, 0.1)' : appointment.status === 'completed' ? 'rgba(20, 184, 166, 0.1)' : 'rgba(239, 68, 68, 0.1)'; %>; color: <%= appointment.status === 'pending' ? '#f59e0b' : appointment.status === 'today' ? '#3b82f6' : appointment.status === 'completed' ? '#14b8a6' : '#ef4444'; %>; font-weight: 500;">
+              <%= appointment.status === 'pending' ? 'Pending' : appointment.status === 'today' ? 'Today' : appointment.status === 'completed' ? 'Completed' : 'Cancelled' %>
+            </span>
+          </div>
+          <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">
+            <i class="fa-solid fa-user-doctor me-1"></i><%= appointment.doctorName || 'N/A' %> | 
+            <i class="fa-solid fa-calendar me-1"></i><%= new Date(appointment.appointmentDate).toLocaleDateString() %>
+          </p>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <!-- Consultation History -->
+  <% if (patient.consultations && patient.consultations.length > 0) { %>
+  <div class="profile-section-title">
+    <i class="fa-solid fa-clock-rotate-left"></i> Consultation History
+  </div>
+  <% 
+    const sortedConsultations = [...patient.consultations].sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+  %>
+  <% sortedConsultations.forEach((consultation, index) => { %>
+    <div class="consultation-card">
+      <div class="consultation-header">
+        <div class="consultation-header-left">
+          <div class="consultation-icon">
+            <i class="fa-solid <%= consultation.status === 'active' ? 'fa-user-md' : 'fa-check' %>"></i>
+          </div>
+          <div>
+            <h4><%= consultation.disease %></h4>
+            <span class="status-badge <%= consultation.status %>">
+              <%= consultation.status === 'active' ? 'Active' : 'Completed' %>
+            </span>
+          </div>
+        </div>
+        <% if (consultation.status === 'active') { %>
+          <a href="/doctor/prescription/<%= patient._id %>" class="btn-prescribe" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+            <i class="fa-solid fa-plus"></i> Add Prescription
+          </a>
+        <% } %>
+      </div>
+      
+      <div class="consultation-meta">
+        <div class="consultation-meta-item">
+          <i class="fa-solid fa-user-doctor"></i>
+          <span>Dr. <%= consultation.doctorName || consultation.doctor?.name || 'N/A' %></span>
+        </div>
+        <div class="consultation-meta-item">
+          <i class="fa-solid fa-play"></i>
+          <span>Started: <%= new Date(consultation.startDate).toLocaleDateString() %></span>
+        </div>
+        <% if (consultation.endDate) { %>
+          <div class="consultation-meta-item">
+            <i class="fa-solid fa-stop"></i>
+            <span>Ended: <%= new Date(consultation.endDate).toLocaleDateString() %></span>
+          </div>
+        <% } else { %>
+          <div class="consultation-meta-item">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <span style="color: #22c55e; font-weight: 500;">Ongoing Treatment</span>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="consultation-body">
+        <!-- Prescriptions for this consultation -->
+        <% if (consultation.prescriptions && consultation.prescriptions.length > 0) { %>
+          <div class="prescriptions-title">
+            <i class="fa-solid fa-file-prescription"></i> Prescriptions (<%= consultation.prescriptions.length %>)
+          </div>
+          <% consultation.prescriptions.forEach((prescription, pIndex) => { %>
+            <div class="prescription-card">
+              <div class="prescription-date">
+                <i class="fa-solid fa-calendar"></i>
+                Prescription Date: <%= new Date(prescription.date).toLocaleDateString() %>
+              </div>
+              
+              <% if (prescription.medicines && prescription.medicines.length > 0) { %>
+                <ul class="prescription-medicines">
+                  <% prescription.medicines.forEach((medicine, mIndex) => { %>
+                    <li>
+                      <i class="fa-solid fa-capsules"></i>
+                      <div>
+                        <span class="medicine-name"><%= medicine.name %></span>
+                        <span class="medicine-details">
+                          - <%= medicine.dosage %>, <%= medicine.duration %>
+                          <% if (medicine.instructions) { %>
+                            (<%= medicine.instructions %>)
+                          <% } %>
+                        </span>
+                      </div>
+                    </li>
+                  <% }) %>
+                </ul>
+              <% } %>
+              
+              <% if (prescription.notes) { %>
+                <div class="prescription-notes">
+                  <strong><i class="fa-solid fa-note-sticky me-1"></i>Notes:</strong>
+                  <%= prescription.notes %>
+                </div>
+              <% } %>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="empty-consultation">
+            <i class="fa-solid fa-file-prescription"></i>
+            <p>No prescriptions added for this consultation yet.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  <% }) %>
+  <% } else { %>
+  <!-- No Consultations -->
+  <div class="profile-section-title">
+    <i class="fa-solid fa-clock-rotate-left"></i> Consultation History
+  </div>
+  <div class="empty-consultation">
+    <i class="fa-solid fa-clipboard"></i>
+    <p>No consultation history available for this patient.</p>
+  </div>
+  <% } %>
+
+  <!-- End Consultation Button (if active) -->
+  <% if (activeConsultation) { %>
+  <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+    <form method="post" action="/end-consultation/<%= patient._id %>" onsubmit="return confirm('Are you sure you want to end this consultation? This will move it to history.');">
+      <button type="submit" class="btn-end-consultation">
+        <i class="fa-solid fa-stop"></i> End Current Consultation
+      </button>
+    </form>
+  </div>
+  <% } %>
+
+</div>
