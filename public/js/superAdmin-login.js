@@ -195,8 +195,8 @@ function validateLoginField(input) {
         const labels = ['Weak', 'Fair', 'Good', 'Strong'];
         const classes = ['strength-weak', 'strength-fair', 'strength-good', 'strength-strong'];
 
-        fill.className = 'superadmin-strength-fill ' + classes[strength - 1];
-        text.textContent = labels[strength - 1] || 'Weak';
+        fill.className = 'superadmin-strength-fill' + (strength > 0 ? ' ' + classes[strength - 1] : '');
+        text.textContent = strength > 0 ? (labels[strength - 1] || 'Weak') : 'Weak';
     }
 
     function updatePasswordMatch(match) {
@@ -238,25 +238,31 @@ function validateLoginField(input) {
 
     function showLoading(show) {
         if (show) {
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = `
-                <span>Logging in...</span>
-                <div class="spinner-border spinner-border-sm ms-2" role="status"></div>
-            `;
+            // Disable the button in a setTimeout to avoid canceling the browser's form submission
+            setTimeout(() => {
+                if (loginBtn) loginBtn.disabled = true;
+            }, 0);
+
+            if (loginBtn) {
+                loginBtn.innerHTML = isSignup ? `
+                    <span>Creating Account...</span>
+                    <div class="spinner-border spinner-border-sm ms-2" role="status"></div>
+                ` : `
+                    <span>Logging in...</span>
+                    <div class="spinner-border spinner-border-sm ms-2" role="status"></div>
+                `;
+            }
             body.classList.add('superadmin-loading');
         } else {
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = 'Log In <i class="fas fa-arrow-right ms-2"></i>';
+            if (loginBtn) {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = isSignup ? 
+                    'Create Account <i class="fas fa-arrow-right ms-2"></i>' : 
+                    'Log In <i class="fas fa-arrow-right ms-2"></i>';
+            }
             body.classList.remove('superadmin-loading');
         }
     }
-
-    // Enter key support
-    document.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && document.activeElement === passwordInput) {
-            form.dispatchEvent(new Event('submit'));
-        }
-    });
 
     // Auto-hide loading on page unload (in case of errors)
     window.addEventListener('beforeunload', function() {

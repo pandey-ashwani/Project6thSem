@@ -32,10 +32,10 @@
                 <p class="superadmin-signup-subtitle">Join State Health Management System</p>
             </div>
 
-            <% if (typeof messages !== 'undefined' && messages.error) { %>
+            <% if (typeof error !== 'undefined' && error && error.length) { %>
                 <div class="superadmin-error">
                     <i class="fas fa-exclamation-circle me-2"></i>
-                    <%= messages.error %>
+                    <%= error %>
                 </div>
             <% } %>
 

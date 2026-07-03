@@ -39,9 +39,6 @@ app.set("views",path.join(__dirname,"/views"));
 
 const store = MongoStore.create({
     mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/sih-project",
-    crypto: {
-        secret: "mysupersecret"
-    },
     touchAfter: 24 * 3600
 });
 
@@ -52,13 +49,13 @@ store.on("error", (err) => {
 
 const sessionOption = {
     store,
-    secret: "mysupersecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized : true,
-    cookie:{
-        expires : new Date(Date.now() + 7*24*60*60*1000),
-        maxAge : 7 * 24 * 60 * 60 * 1000,
-        httpOnly : true
+    saveUninitialized: true,
+    cookie: {
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true
     }
 };
 
@@ -592,15 +589,24 @@ app.get("/superAdmin-signup",(req,res)=>{
     res.render("user/superAdmin-signup.ejs");
 });
 
-app.post("/superAdmin-signup",async (req,res)=>{
-    try{
-        let {name,email,phone,username , password} = req.body;
-        let newSuperAdmin = new SuperAdmin({name,email,phone,username});
-        await SuperAdmin.register(newSuperAdmin , password);
-        res.redirect("/superAdmin-home");
+app.post("/superAdmin-signup", async (req, res, next) => {
+    try {
+        let { name, email, phone, username, password } = req.body;
+        let newSuperAdmin = new SuperAdmin({ name, email, phone, username });
+        let registeredUser = await SuperAdmin.register(newSuperAdmin, password);
+        req.login(registeredUser, (err) => {
+            if (err) {
+                console.error("Login error after registration:", err);
+                return next(err);
+            }
+            req.flash("success", "Welcome to SwasthyaSankalp SuperAdmin Portal!");
+            res.redirect("/superAdmin-home");
+        });
     }
-    catch(err){
-        res.redirect("/superAdmin-signup")
+    catch (err) {
+        console.error("SuperAdmin Registration Error:", err);
+        req.flash("error", err.message);
+        res.redirect("/superAdmin-signup");
     }
 });
 
@@ -786,6 +792,8 @@ app.get("/patient-myProfile",isPatientLoggedIn,(req,res)=>{
 })
 
 
-app.listen("8080",()=>{
-    console.log("Server started at port 8080")
-})
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+});
